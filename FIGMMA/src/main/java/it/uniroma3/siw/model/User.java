@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -34,16 +35,23 @@ public class User {
 	@Size(min=1)
 	private String cF;
 	
-	@NotBlank
+	@NotNull
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate dateOfBirth;
 	
-	@OneToOne
-	@NotBlank
+	@OneToOne(cascade = CascadeType.ALL)
+	@NotNull
 	private Site site;
 	
 	@OneToOne(fetch = FetchType.EAGER, mappedBy="user", cascade = CascadeType.ALL)
 	private Credentials credentials;
+	
+	@OneToOne
+	private Team team;
+	
+	public User() {
+		this.site=new Site();
+	}
 	
 	/***************** Get e Set metod *****************/
 

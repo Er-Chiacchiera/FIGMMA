@@ -33,6 +33,38 @@
     				<div class="badge text-bg-danger my-2" th:if="${#fields.hasErrors('user.cognome')}" th:errors="${user.cognome}"></div>
     				</div>
     				
+    				<div class="mb-3">
+						<label class="form-label">Codice Fiscale</label>
+						<input th:field="${user.cF}" type="text" required  class="form-control shadow">
+    				<div class="badge text-bg-danger my-2" th:if="${#fields.hasErrors('user.cF')}" th:errors="${user.cF}"></div>
+    				</div>
+    				
+    				<div class="col-md-6">
+					<label for="user.dateOfBirth" class="form-label">Data di nascita</label>
+					<input class="form-control" required type="date" th:field="${user.dateOfBirth}" id="user.dateOfBirth" placeholder="dd/mm/yyyy"/>
+					<span th:if="${#fields.hasErrors('user.dateOfBirth')}" th:errors="${user.dateOfBirth}"></span>
+				</div>
+				
+				
+				<!--Sezione che riguarla la classe Site -->
+				<div class="col-12">
+					<label for="user.site.country" class="form-label">Regione</label>
+					<input class="form-control"  type="text" th:field="${user.site.country}" id="user.site.country"/>
+					<span th:if="${#fields.hasErrors('user.site.country')}" th:errors="${user.site.country}"></span>
+				</div>
+				
+				<div class="col-12">
+					<label for="user.site.city" class="form-label"> Città</label>
+					<input class="form-control" type="text" th:field="${user.site.city}" id="user.site.city"/>
+					<span th:if="${#fields.hasErrors('user.site.city')}" th:errors="${user.site.city}"></span>
+				</div>
+				
+				<div class="col-12">
+					<label for="user.site.cap" class="form-label"> Cap</label>
+					<input class="form-control" type="number" th:field="${user.site.cap}" id="user.site.cap"/>
+					<span th:if="${#fields.hasErrors('user.site.cap')}" th:errors="${user.site.cap}"></span>
+				</div>
+    				
     				<!--Inserimento del Username-->
     				<div class="mb-3">
 						<label class="form-label">Username</label>
