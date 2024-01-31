@@ -33,10 +33,12 @@ public class AthleteService {
 	}
 
 	public void updateAthlete(@Valid Athlete athlete) {
+		
 		Athlete oldAthlete =this.athleteRepository.findById(athlete.getId()).get();
 		oldAthlete.setName(athlete.getName());
 		oldAthlete.setSurname(athlete.getSurname());
 		oldAthlete.setDateOfBirth(athlete.getDateOfBirth());
+		
 		Site oldSite = oldAthlete.getSite();
 		oldSite.setCountry(athlete.getSite().getCountry());
 		oldSite.setCity(athlete.getSite().getCity());

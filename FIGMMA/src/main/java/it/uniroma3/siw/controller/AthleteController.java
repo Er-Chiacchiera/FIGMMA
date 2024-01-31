@@ -1,7 +1,5 @@
 package it.uniroma3.siw.controller;
 
-import org.antlr.v4.runtime.atn.ErrorInfo;
-import org.hibernate.query.sqm.ComparisonOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,13 +70,14 @@ public class AthleteController {
 		return ATHLETE_DIR + "athleteEdit"; 
 	}
 	
-	 @PostMapping("/update")
+	 @PostMapping("/update/{id}")
 	    public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, BindingResult bindingResult, Model model) {
 	        if (bindingResult.hasErrors()) {
 	        	System.out.println("sono negli errori");
 	        	System.out.println(bindingResult);
 	        	return ATHLETE_DIR + "athleteEdit";
 	        }
+	        System.out.println("non sono negli errori!!!!!!!!!\n");
 	        this.athleteService.updateAthlete(athlete);
 	        return "redirect:/athlete/" + athlete.getId();
 	    }

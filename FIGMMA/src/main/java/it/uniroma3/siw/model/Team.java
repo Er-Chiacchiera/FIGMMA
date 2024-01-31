@@ -36,6 +36,10 @@ public class Team {
 	@NotNull
 	@OneToOne
 	private User president;
+	
+	public Team() {
+		this.site= new Site();
+	}
 
 
 	/***************** Get e Set metod *****************/

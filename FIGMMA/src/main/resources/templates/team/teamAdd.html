@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/base :: head(title=Add+' '+Athlete)}">Hompage</head>
+<head th:replace="~{fragments/base :: head(title=Homepage)}">Hompage</head>
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
@@ -20,15 +20,9 @@
 				</div>
 				
 				<div class="col-md-6">
-					<label for="surname" class="form-label">Cognome</label>
-					<input class="form-control" required type="text" th:field="*{surname}" id="surname"/>
-					<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
-				</div>
-				
-				<div class="col-md-6">
-					<label for="DateOfBirth" class="form-label">Data di nascita</label>
-					<input class="form-control" required type="date" th:field="*{DateOfBirth}" id="DateOfBirth" placeholder="dd/mm/yyyy"/>
-					<span th:if="${#fields.hasErrors('DateOfBirth')}" th:errors="*{DateOfBirth}"></span>
+					<label for="dateOfCreation" class="form-label">Data di nascita</label>
+					<input class="form-control" required type="date" th:field="*{dateOfCreation}" id="dateOfCreation" placeholder="dd/mm/yyyy"/>
+					<span th:if="${#fields.hasErrors('dateOfCreation')}" th:errors="*{dateOfCreation}"></span>
 				</div>
 				
 				
@@ -52,14 +46,19 @@
 				</div>
 				
 				<div class="col-12">
+					<label for="site.address" class="form-label"> Via</label>
+					<input class="form-control" type="text" th:field="*{site.address}" id="site.address"/>
+					<span th:if="${#fields.hasErrors('site.address')}" th:errors="*{site.address}"></span>
+				</div>
+				
+				<div class="col-12">
 					<button type="submit" class="btn btn-primary">Add</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	
-	
-	
+ 
+ 
 	<footer th:replace="~{fragments/base :: footer}"><footer>
 </body>
 </html>

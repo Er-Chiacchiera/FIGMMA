@@ -8,7 +8,7 @@
 	<div class="d-flex container justify-content-center mt-4">
 		<div class="col-6 card border border-primary p-3 shadow" >	
 			<!--Form per aggiungere un nuovo Istruttore-->
-			<form th:action="@{/athlete/update}" method="POST" th:object="${athlete}" class="row g-3">
+			<form th:action="@{'/athlete/update/' + ${athlete.id}}" method="POST" th:object="${athlete}" class="row g-3">
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
