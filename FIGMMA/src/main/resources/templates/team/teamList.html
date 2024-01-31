@@ -4,6 +4,56 @@
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<!--Dropdown per il filtraggio della ricerca-->
+	<div class="container text-center">
+		<div class="row align-items-start">
+			<div class="col">
+				<div class="dropdown mb-4">
+					<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtra per tipo </button>
+					<div class="dropdown-menu">
+						<div class="container-fluid">
+							<form th:action="@{/team/search}" method="POST" class="mb-3">
+								<div class="row">
+									<div class="col-md-4">
+										<select class="form-select" type"text" th:value="${type}" name="type">
+											<option value="team">Team</option>
+											<option value="president">Presidente</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<input class="form-control" placeholder="Es. fight, Rossi" required type="text" th:value="${attribute}" name="attribute"/>
+									</div>
+									<div class="col-md-4">
+										<button type="submit" class="btn btn-primary">Cerca</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:if="${teams.isEmpty()}">Non ci sono Team nel sistema</div>
+	
+	<!--Inizio delle card-->	
+	<div class="container text-center">
+		<div class="row ">
+			<div class="col mb-4 d-flex justify-content-center" th:each="team : ${teams}">
+				<div class="card" style="width: 18rem;">
+					<a class="text-reset text-decoration-none" th:href="@{'/team/' + ${team.id}}">
+						<img src="..." class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${team.name} ">Card title</h5>
+							<p class="card-text" th:text=" 'Presidente: ' + ${team.president.name} + ' ' +${team.president.surname}">Typology</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
  
  
 	<footer th:replace="~{fragments/base :: footer}"><footer>
