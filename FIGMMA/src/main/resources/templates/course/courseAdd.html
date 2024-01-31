@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=Add+' '+course)}">Add course</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<div class="d-flex container justify-content-center mt-4">
+		<div class="col-6 card border border-primary p-3 shadow" >	
+			<!--Form per aggiungere un nuovo Istruttore-->
+			<form th:action="@{'/course/add/' + ${idInstructor}}" method="POST" th:object="${course}" class="row g-3">
+				<div th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+				</div>
+				
+				<div class="col-md-6">
+					<label for="title" class="form-label">Title</label>
+					<input class="form-control" required type="text" th:field="${course.title}" id="title"/>
+					<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label for="typology" class="form-label">Typology</label>
+					<input class="form-control" required type="text" th:field="${course.typology}" id="typology"/>
+					<span th:if="${#fields.hasErrors('typology')}" th:errors="*{typology}"></span>
+				</div>
+				
+				<div class="col-12">
+					<label for="description" class="form-label"> Descizione</label>
+					<textarea class="form-control" aria-label="With textarea" type="text" th:field="${course.description}" id="description"></textarea>
+				</div>
+				
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	
+	
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+</body>
+</html>

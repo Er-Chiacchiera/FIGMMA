@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=Add+' '+Instructor)}">Hompage</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<div class="container-fluid">
+	<!--Form per aggiungere un nuovo Istruttore-->
+		<form th:action="@{'/instructor/update/' + ${instructor.id}}" method="POST" th:object="${instructor}" class="row g-3">
+			<div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+			</div>
+			
+			<div class="col-md-6">
+				<label for="name" class="form-label">Nome</label>
+				<input class="form-control" required type="text" th:field="${instructor.name}" id="name"/>
+				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+			</div>
+			
+			<div class="col-md-6">
+				<label for="surname" class="form-label">surname</label>
+				<input class="form-control" required type="text" th:field="${instructor.surname}" id="surname"/>
+				<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+			</div>
+			
+			<div class="col-md-6">
+				<label for="dateOfBirth" class="form-label">Data di nascita</label>
+				<input class="form-control" required type="date" th:field="${instructor.dateOfBirth}" id="dateOfBirth" placeholder="dd/mm/yyyy"/>
+				<span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+			</div>
+			
+			<div class="col-md-6">
+				<label for="speciality" class="form-label">Specialità</label>
+				<select class="form-select" aria-label="Default select example" th:field="${instructor.speciality}">
+					<option value="Surf">Surf</option>
+					<option value="Yoga">Yoga</option>
+					<option value="Trainer">Trainer</option>
+					<option value="Mobilità">Mobilità</option>
+				</select>
+			</div>
+			
+			<div class="col-12">
+				<label for="inputEmail" class="form-label">Email</label>
+				<input class="form-control"  type="text" th:field="${instructor.email}" id="email"/>
+				<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+			</div>
+			
+			<div class="col-12">
+				<label for="inputEmail" class="form-label"> Profilo Instagram</label>
+				<input class="form-control" type="text" th:field="${instructor.instagramUrl}" id="instagramUrl"/>
+				<span th:if="${#fields.hasErrors('instagramUrl')}" th:errors="*{instagramUrl}"></span>
+			</div>
+			<div class="col-12">
+				<label for="inputDescrizione" class="form-label"> Descizione</label>
+				<textarea class="form-control" aria-label="With textarea" type="text" th:field="${instructor.descrizione}" id="descrizione"></textarea>
+			</div>
+			
+			<div class="col-12">
+				<button type="submit" class="btn btn-primary">Edit</button>
+			</div>
+		</form>
+	</div>
+	
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=Atleti)}">Atleti</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<!--Dropdown per il filtraggio della ricerca-->
+	<div class="container text-center">
+		<div class="row align-items-start">
+			<div class="col">
+				<div class="dropdown mb-4">
+					<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtra per tipo </button>
+					<div class="dropdown-menu">
+						<div class="container-fluid">
+							<form th:action="@{/athlete/search}" method="POST" class="mb-3">
+								<div class="row">
+									<div class="col-md-4">
+										<select class="form-select" type"text" th:value="${type}" name="type">
+											<option value="name">Nome</option>
+											<option value="surname">Cognome</option>
+											<option value="Team">Team</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<input class="form-control" placeholder="Es. Marco, Rossi, force" required type="text" th:value="${attribute}" name="attribute"/>
+									</div>
+									<div class="col-md-4">
+										<button type="submit" class="btn btn-primary">Cerca</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/add/new'}"> Add new athlete</a>
+			</div>
+		</div>
+	</div>
+	
+	<div th:if="${athletes.isEmpty()}">Non ci sono atleti nel sistema</div>
+	
+	<!--Inizio delle card-->	
+	<div class="container text-center">
+		<div class="row">
+			<div class="col mb-4 d-flex justify-content-center" th:each="athlete : ${athletes}">
+				<div class="card" style="width: 18rem;">
+					<a class="text-reset text-decoration-none" th:href="@{'/athlete' + '/' + ${athlete.id}}">
+						<img src="..." class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${athlete.name} + ' ' + ${athlete.surname}">Card title</h5>
+							<div th:if="${athlete.team == null}">
+								<p class="card-text">Nessun contratto</p>
+							</div>
+							<div th:unless="${athlete.team == null}">
+								<p class="card-text" th:text=" 'Team: ' + ${athlete.team}">Specialità</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="~{fragments/base :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=Add+' '+Athlete)}">Hompage</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<div class="d-flex container justify-content-center mt-4">
+		<div class="col-6 card border border-primary p-3 shadow" >	
+			<!--Form per aggiungere un nuovo Istruttore-->
+			<form th:action="@{/athlete/add}" method="POST" th:object="${athlete}" class="row g-3">
+				<div th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+				</div>
+				
+				<div class="col-md-6">
+					<label for="name" class="form-label">Nome</label>
+					<input class="form-control" required type="text" th:field="*{name}" id="name"/>
+					<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label for="surname" class="form-label">Cognome</label>
+					<input class="form-control" required type="text" th:field="*{surname}" id="surname"/>
+					<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label for="DateOfBirth" class="form-label">Data di nascita</label>
+					<input class="form-control" required type="date" th:field="*{DateOfBirth}" id="DateOfBirth" placeholder="dd/mm/yyyy"/>
+					<span th:if="${#fields.hasErrors('DateOfBirth')}" th:errors="*{DateOfBirth}"></span>
+				</div>
+				
+				
+				<!--Sezione che riguarla la classe Site -->
+				<div class="col-12">
+					<label for="site.country" class="form-label">Regione</label>
+					<input class="form-control"  type="text" th:field="*{site.country}" id="site.country"/>
+					<span th:if="${#fields.hasErrors('site.country')}" th:errors="*{site.country}"></span>
+				</div>
+				
+				<div class="col-12">
+					<label for="site.city" class="form-label"> Città</label>
+					<input class="form-control" type="text" th:field="*{site.city}" id="site.city"/>
+					<span th:if="${#fields.hasErrors('site.city')}" th:errors="*{site.city}"></span>
+				</div>
+				
+				<div class="col-12">
+					<label for="site.cap" class="form-label"> Cap</label>
+					<input class="form-control" type="number" th:field="*{site.cap}" id="site.cap"/>
+					<span th:if="${#fields.hasErrors('site.cap')}" th:errors="*{site.cap}"></span>
+				</div>
+				
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	
+	
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+</body>
+</html>
