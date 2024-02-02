@@ -22,23 +22,23 @@ public class AthleteController {
 	@Autowired AthleteValidator athleteValidator;
 	@Autowired AthleteService athleteService;
 	@Autowired SiteValidator siteValidator;
-	
+
 	public static final String ATHLETE_DIR = "athlete/";
 
 
-	
+
 	/*Form per aggiungere un nuovo Istruttore*/
 	@GetMapping("/add/new")
 	public String formNewAthlete(Model model) {
 		model.addAttribute("athlete", new Athlete());
 		return ATHLETE_DIR + "athleteAdd";
 	}
-	
+
 	/*Verifico se il nuovo istruttore rispetta i criteri e lo aggiungo al database altirmenti torno alla form*/
 	@PostMapping("/add")
 	public String newAthlete(@Valid @ModelAttribute("athlete") Athlete athlete,BindingResult bindingResult , Model model) {
-	this.athleteValidator.validate(athlete, bindingResult);
-	this.siteValidator.validate(athlete.getSite(),bindingResult);
+		this.athleteValidator.validate(athlete, bindingResult);
+		this.siteValidator.validate(athlete.getSite(),bindingResult);
 		if (!bindingResult.hasErrors()) {
 			this.athleteService.addNewAthlete(athlete);
 			model.addAttribute("athlete", athlete);
@@ -48,48 +48,48 @@ public class AthleteController {
 			return ATHLETE_DIR + "athleteAdd";
 		}
 	}
-	
+
 	/*Mostra la lista di tutti gli atleti*/
 	@GetMapping("/all")
 	public String getAthletes(Model model) {
 		model.addAttribute("athletes", this.athleteService.GetAllAthletes());
 		return  ATHLETE_DIR + "athleteList";
 	}
-	
+
 	/*Mostra la pagina delll'atleta*/
 	@GetMapping("/{id}")
 	public String getAthlete(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("athlete", this.athleteService.GetAthleteById(id));
 		return ATHLETE_DIR + "athleteProfile";
 	}
-	
-	
+
+
 	@GetMapping("/edit/{id}")
 	public String formEditAthlete(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("athlete", this.athleteService.GetAthleteById(id));
 		return ATHLETE_DIR + "athleteEdit"; 
 	}
-	
-	 @PostMapping("/update/{id}")
-	    public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, BindingResult bindingResult, Model model) {
-	        if (bindingResult.hasErrors()) {
-	        	System.out.println("sono negli errori");
-	        	System.out.println(bindingResult);
-	        	return ATHLETE_DIR + "athleteEdit";
-	        }
-	        System.out.println("non sono negli errori!!!!!!!!!\n");
-	        this.athleteService.updateAthlete(athlete);
-	        return "redirect:/athlete/" + athlete.getId();
-	    }
-	
+
+	@PostMapping("/update/{id}")
+	public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			System.out.println("sono negli errori");
+			System.out.println(bindingResult);
+			return ATHLETE_DIR + "athleteEdit";
+		}
+		System.out.println("non sono negli errori!!!!!!!!!\n");
+		this.athleteService.updateAthlete(athlete);
+		return "redirect:/athlete/" + athlete.getId();
+	}
+
 	/**********************************************
 	ancora non implementato per rimuoverlo la team
-	**********************************************/
-	
+	 **********************************************/
+
 	/*Cancella l'atleta dal sitema*/
-	  @GetMapping("/delete/{id}")
-		public String deleteAthlete(@PathVariable("id") Long id, Model model) {
-			this.athleteService.deleteById(id);
-			return "redirect:/instructor/all";
-		}
+	@GetMapping("/delete/{id}")
+	public String deleteAthlete(@PathVariable("id") Long id, Model model) {
+		this.athleteService.deleteById(id);
+		return "redirect:/instructor/all";
+	}
 }

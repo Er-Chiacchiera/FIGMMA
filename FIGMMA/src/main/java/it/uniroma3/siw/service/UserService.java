@@ -56,8 +56,8 @@ public class UserService {
         return result;
     }
 
-	public Object getAllPresidentHaveNotTeam() {
-		Optional<User> presidents=this.userRepository.findAllPresidentFree("PRESIDENT");
+	public List<User> findPresidentsWithoutTeam() {
+		List<User> presidents=this.userRepository.findPresidentsWithoutTeam();
 		return presidents;
 	}
 

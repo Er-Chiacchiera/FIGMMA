@@ -1,5 +1,7 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,11 @@ public class AthleteService {
 		oldAthlete.setSite(oldSite);
 		this.athleteRepository.save(oldAthlete);
 		
+		
+	}
+
+	public List<Athlete> getAllFreeAthletes() {
+		return this.athleteRepository.findAllFreeAthletes();
 		
 	}
 	

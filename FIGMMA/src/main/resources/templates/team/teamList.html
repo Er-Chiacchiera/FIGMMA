@@ -33,8 +33,13 @@
 					</div>
 				</div>
 			</div>
+			<div class="col">
+				<a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/add/new'}"> Add new Team</a>
+			</div>
 		</div>
 	</div>
+	
+	
 	
 	<div th:if="${teams.isEmpty()}">Non ci sono Team nel sistema</div>
 	
@@ -47,7 +52,7 @@
 						<img src="..." class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title" th:text="${team.name} ">Card title</h5>
-							<p class="card-text" th:text=" 'Presidente: ' + ${team.president.name} + ' ' +${team.president.surname}">Typology</p>
+							<p class="card-text" th:text=" 'Presidente: ' + ${team.president.nome} + ' ' +${team.president.cognome}">Typology</p>
 						</div>
 					</a>
 				</div>

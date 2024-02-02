@@ -3,12 +3,16 @@ package it.uniroma3.siw.model;
 
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,15 +34,19 @@ public class Team {
 	private LocalDate dateOfCreation;
 
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Site site;
 
 	@NotNull
 	@OneToOne
 	private User president;
-	
+
+	@OneToMany(mappedBy = "team")
+	private List<Athlete> athletes;
+
 	public Team() {
 		this.site= new Site();
+		this.athletes= new LinkedList<>();
 	}
 
 
@@ -67,6 +75,16 @@ public class Team {
 	public void setDateOfCreation(LocalDate dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
+
+	public List<Athlete> getAthletes() {
+		return athletes;
+	}
+
+
+	public void setAthletes(List<Athlete> athletes) {
+		this.athletes = athletes;
+	}
+
 
 	public Site getSite() {
 		return site;

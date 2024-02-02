@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title='Modifica Atleti nel team')}">Hompage</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<h1 th:text="${team.name}"> nome team</h1>
+	
+	
+	<h4> Atleti nel team:</h4>
+	<ul class="list-group" th:each="athlete : ${team.athletes}"> 
+  		<li class="list-group-item" th:text="${athlete.name} +' '+${athlete.surname}">atleti nel team</li>
+	</ul>
+	
+	
+	<h4> Atleti Disponibili:</h4>
+	<ul class="list-group" th:each="athlete : ${athletesFree}"> 
+  		<li class="list-group-item" th:text="${athlete.name} +' '+${athlete.surname}">atleti  senza contratto</li>
+	</ul>
+	
+	
+ 
+ 
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+</body>
+</html>

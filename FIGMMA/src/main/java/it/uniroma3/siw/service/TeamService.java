@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Team;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.model.Site;
 import it.uniroma3.siw.repository.TeamRepository;
 import jakarta.transaction.Transactional;
@@ -12,10 +13,14 @@ import jakarta.validation.Valid;
 @Service
 public class TeamService {
 	@Autowired TeamRepository teamRepository;
+	@Autowired UserService userService;
 
 	@Transactional
 	public void addNewTeam(Team team) {
 		this.teamRepository.save(team);
+		User president =team.getPresident();
+		president.setTeam(team);
+		this.userService.saveUser(president);
 	}
 
 	public Iterable<Team> GetAllTeams() {

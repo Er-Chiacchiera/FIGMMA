@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=profile)}">profile</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	
+	<div class="container">
+		<div class="row flex-md-row flex-sm-column">
+			<!--Card del presidente-->
+			<div class="col-md-4 mb-4">
+				<div class="card mx-auto" style="width: 18rem;">
+					<img src="..." class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${president.nome} + ' ' + ${president.cognome}">Card title</h5>
+					</div>
+					
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"> Nato a:
+							<p th:text="'Regione: ' + ${president.site.country}"> Regione </p>
+							<p th:text="'Città: ' + ${president.site.City}"> città </p>
+							<p th:text="'Cap: ' + ${president.site.cap}"> cap </p>
+						</li>
+						
+						<li class="list-group-item" th:text="'Nato il: ' + ${president.dateOfBirth}"> data di nascita</li>
+						<!--Solo per admin-->
+						<div sec:authorize="hasAuthority('ADMIN')">
+							<li class="list-group-item"><a th:href="@{'/user/edit/' + ${user.id}}" class="card-link">Edit athlete</a></li>
+							<li class="list-group-item"><a th:href="@{'/user/delete/' + ${user.id}}" class="card-link">Delete athlete</a></li>
+						</div>
+					</ul>
+				</div>
+			</div>
+		
+			<!--Team card-->
+			<div class="col-md-8 mb-4">
+					
+				<div class="row">
+					<a type="button" class="btn mx-2 btn-primary " th:href="@{'/team/edit/Athletes/' + ${president.id}}"> Add new course</a>
+				</div>
+					
+					<!--Inizio delle card-->
+				<div class="row text-center">
+					<h2>Team</h2>
+					
+					<div class="col mb-4 d-flex justify-content-center">
+						<div class="card mx-auto" style="width: 18rem;">
+							<img src="..." class="card-img-top" alt="...">
+							<div class="card-body">
+								<h5 class="card-title" th:text="'Team: ' + ${president.team.name}">Card title</h5>
+							</div>
+						
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item"> Situata in :
+									<p th:text="'Regione: ' + ${president.team.site.country}"> Regione </p>
+									<p th:text="'Città: ' + ${president.team.site.City}"> città </p>
+									<p th:text="'Cap: ' + ${president.team.site.cap}"> cap </p>
+								</li>
+											
+								<li class="list-group-item" th:text="'Fondata il : ' + ${president.team.dateOfCreation}"> data di nascita</li>
+								<!--Solo per admin-->
+								<div sec:authorize="hasAuthority('PRESIDENT')">
+									<li class="list-group-item"><a th:href="@{'/team/edit/' + ${president.team.id}}" class="card-link">Edit Team</a></li>
+									<li class="list-group-item"><a th:href="@{'/team/delete/' + ${president.team.id}}" class="card-link">Delete Team</a></li>
+								</div>
+							</ul>
+						</div>			
+					</div>
+					<!--Inizio della sezione atleti-->
+					<div class="col-md-6 mb-4 d-flex flex-column align-items-center" >
+						<h4>Atleti</h4>
+						<div class="d-flex justify-content-between">
+							<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/editAthletes/' + ${president.team.id}}">Edit Athletes Team</a>
+						</div>
+						<ol class="list-group list-group-numbered" th:each="athlete : ${president.team.athletes}"> 
+  							<li class="list-group-item" th:text="${athlete.name} +' '+${athlete.surname} " >A list item</li>
+  							<li class="list-group-item">A list item</li>
+							<li class="list-group-item">A list item</li>
+						</ol>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+ 
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+
+</body>
+</html>

@@ -8,7 +8,7 @@
 	<div class="d-flex container justify-content-center mt-4">
 		<div class="col-6 card border border-primary p-3 shadow" >	
 			<!--Form per aggiungere un nuovo Atleta-->
-			<form th:action="@{/athlete/add}" method="POST" th:object="${athlete}" class="row g-3">
+			<form th:action="@{/team/add}" method="POST" th:object="${team}" class="row g-3">
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
@@ -20,9 +20,18 @@
 				</div>
 				
 				<div class="col-md-6">
-					<label for="dateOfCreation" class="form-label">Data di nascita</label>
+					<label for="dateOfCreation" class="form-label">Data di fondazione</label>
 					<input class="form-control" required type="date" th:field="*{dateOfCreation}" id="dateOfCreation" placeholder="dd/mm/yyyy"/>
 					<span th:if="${#fields.hasErrors('dateOfCreation')}" th:errors="*{dateOfCreation}"></span>
+				</div>
+				
+				<div class="col-md-4">
+					<label for="president" class="form-label">Secgli il presidente</label>
+					<select class="form-select" type="User" th:field="*{president}" name="president">
+						<div th:each="user : ${users}">
+							<option th:value="${user.id}" th:text="${user.nome} + ' ' +${user.cognome}">presidente</option>
+						</div>
+					</select>
 				</div>
 				
 				

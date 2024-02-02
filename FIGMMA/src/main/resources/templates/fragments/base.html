@@ -30,10 +30,11 @@
 					</li>
 				</ul>
 				<!--Sezione per Login-Logout-Register-->
-				<div class="col-md-3 d-flex justify-content-end">
+				<div class="col-md-3 ms-auto d-flex justify-content-end">
 			      <a sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-primary me-2" th:href = @{/login}>Login</a>
-			      <a sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary " href="/" th:href = @{/register}>Sign-up</a>
-			      <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" href="/" th:href = @{/logout}>Logout</a>
+			      <a sec:authorize="!isAuthenticated()" type="button" class="btn mx-2 btn-primary " th:href = @{/register}>Sign-up</a>
+			      <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary"  th:href = @{/user/profile}>Profile</a>
+			      <a sec:authorize="isAuthenticated()" type="button" class="btn mx-2 btn-primary"  th:href = @{/logout}>Logout</a>
 
 			    </div>
 			</div>

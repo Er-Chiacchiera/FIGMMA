@@ -19,6 +19,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User {
+
 	@Id 
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -109,6 +110,14 @@ public class User {
 
 	public void setCredentials(Credentials credentials) {
 		this.credentials = credentials;
+	}
+	
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 	
 	
