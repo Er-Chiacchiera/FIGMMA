@@ -36,10 +36,6 @@
 			<!--Team card-->
 			<div class="col-md-8 mb-4">
 					
-				<div class="row">
-					<a type="button" class="btn mx-2 btn-primary " th:href="@{'/team/edit/Athletes/' + ${president.id}}"> Add new course</a>
-				</div>
-					
 					<!--Inizio delle card-->
 				<div class="row text-center">
 					<h2>Team</h2>
@@ -59,11 +55,6 @@
 								</li>
 											
 								<li class="list-group-item" th:text="'Fondata il : ' + ${president.team.dateOfCreation}"> data di nascita</li>
-								<!--Solo per admin-->
-								<div sec:authorize="hasAuthority('PRESIDENT')">
-									<li class="list-group-item"><a th:href="@{'/team/edit/' + ${president.team.id}}" class="card-link">Edit Team</a></li>
-									<li class="list-group-item"><a th:href="@{'/team/delete/' + ${president.team.id}}" class="card-link">Delete Team</a></li>
-								</div>
 							</ul>
 						</div>			
 					</div>

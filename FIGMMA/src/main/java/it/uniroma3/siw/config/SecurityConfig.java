@@ -46,6 +46,7 @@ public class SecurityConfig {
 				// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register
 				.requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
 				.requestMatchers(HttpMethod.GET, "/*/add/*","/*/edit/*","/*/delete/*","*/update/*").hasAnyAuthority(ADMIN_ROLE)
+				.requestMatchers(HttpMethod.GET, "/team/editAthletes/*").hasAnyAuthority(PRESIDENT_ROLE)
 				.requestMatchers(HttpMethod.POST, "/*/add/*","/*/edit/*","/*/delete/*","*/update/*").hasAnyAuthority(ADMIN_ROLE)
 				//solo gli utenti autenticati con ruolo admin possono accedere a risorse con path /admin/**
 				
