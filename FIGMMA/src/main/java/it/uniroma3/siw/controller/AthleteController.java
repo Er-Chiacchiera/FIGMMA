@@ -87,7 +87,7 @@ public class AthleteController {
 	@GetMapping("/delete/{id}")
 	public String deleteAthlete(@PathVariable("id") Long id, Model model) {
 		this.athleteService.deleteById(id);
-		return "redirect:/instructor/all";
+		return "redirect:/athlete/all";
 	}
 	
 	/*Ricerco dei specifici ATLETI su dei parametri */

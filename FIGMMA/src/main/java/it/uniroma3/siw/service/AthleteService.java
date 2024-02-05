@@ -35,7 +35,8 @@ public class AthleteService {
 	}
 
 	public void deleteById(Long id) {
-		this.teamService.removeAthlete(this.athleteRepository.findById(id).get());
+		if(this.athleteRepository.findById(id).get().getTeam()!=null)
+			this.teamService.removeAthlete(this.athleteRepository.findById(id).get());
 		this.athleteRepository.deleteById(id);	
 	}
 

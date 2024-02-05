@@ -15,7 +15,8 @@
 					<img src="..." class="card-img-top" alt="...">
 					<div class="card-body">
 						<h5 class="card-title" th:text="'Team: ' + ${team.name}">Card title</h5>
-						<p th:text="'Presidente: ' + ${team.president.nome} + ' ' + ${team.president.cognome}"> President name</p>
+						<p th:text="'Presidente: ' + ${team.president.nome} + ' ' + ${team.president.cognome}">
+							President name</p>
 					</div>
 
 					<ul class="list-group list-group-flush">
@@ -25,15 +26,47 @@
 							<p th:text="'Cap: ' + ${team.site.cap}"> cap </p>
 						</li>
 
-						<li class="list-group-item" th:text="'Fondata il : ' + ${team.dateOfCreation}"> data di nascita </li>
+						<li class="list-group-item" th:text="'Fondata il : ' + ${team.dateOfCreation}"> data di nascita
+						</li>
 
 						<div sec:authorize="hasAuthority('ADMIN')">
-							<li class="list-group-item"><a th:href="@{'/team/edit/' + ${team.id}}" class="card-link">Edit team</a></li>
-							<li class="list-group-item"><a th:href="@{'/team/delete/' + ${team.id}}" class="card-link">Delete team</a></li>
+							<li class="list-group-item"><a type="button" class="btn btn-primary card-link"
+									th:href="@{'/team/edit/' + ${team.id}}">Edit team</a></li>
+							<li class="list-group-item">
+								<!-- Button trigger modal -->
+								<a type="button" class="btn btn-primary" data-bs-toggle="modal"
+									data-bs-target="#exampleModal">
+									Delete team </a>
+								<!-- Modal -->
+								<div class="modal fade" id="exampleModal" tabindex="-1"
+									aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="exampleModalLabel">Elimina Team</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close"></button>
+											</div>
+											<div class="modal-body"
+												th:text="'Sicuro di voler eliminare il team ' +${team.name}">
+												...
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">No</button>
+												<a type="button" class="btn btn-primary"
+													th:href="@{'/team/delete/' + ${team.id}}">Si</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
 						</div>
 					</ul>
 				</div>
 			</div>
+
+
 
 			<!-- Colonna 2 -->
 			<div class="col-md-6">
@@ -42,7 +75,8 @@
 				<ol class="list-group list-group-numbered" th:each="athlete : ${team.athletes}">
 					<li class="list-group-item">
 						<span th:text="${athlete.name} +' '+${athlete.surname}">Nome e cognome atleta</span>
-						<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
+						<a type="button" class="btn btn-outline-primary me-2"
+							th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
 					</li>
 				</ol>
 
