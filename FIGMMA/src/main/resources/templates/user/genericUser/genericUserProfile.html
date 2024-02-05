@@ -1,37 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{fragments/base :: head(title=Profilo)}">Hompage</head>
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
-	
+
 	<div class="card mx-auto" style="width: 18rem;">
 		<img src="..." class="card-img-top" alt="...">
 		<div class="card-body">
 			<h5 class="card-title" th:text="${user.nome} + ' ' + ${user.cognome}">Card title</h5>
 		</div>
-		
-		
+
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item"> Nato a:
 				<p th:text="'Regione: ' + ${user.site.country}"> Regione </p>
 				<p th:text="'Città: ' + ${user.site.City}"> città </p>
 				<p th:text="'Cap: ' + ${user.site.cap}"> cap </p>
 			</li>
-			
+
 			<li class="list-group-item" th:text="'Nato il: ' + ${user.dateOfBirth}"> data di nascita</li>
-			</div>
-			
-			<!--solo per admin-->
-			<div sec:authorize="hasAuthority('ADMIN')">
-  				<li class="list-group-item"><a th:href="@{'/user/edit/' + ${user.id}}" class="card-link">Edit athlete</a></li>
-  				<li class="list-group-item"><a th:href="@{'/user/delete/' + ${user.id}}" class="card-link">Delete athlete</a></li>
-			</div>
 		</ul>
 	</div>
- 
- 
- 
-	<footer th:replace="~{fragments/base :: footer}"><footer>
+
+	<footer th:replace="~{fragments/base :: footer}"> <footer>
+		
 </body>
+
 </html>

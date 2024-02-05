@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{fragments/base :: head(title=Homepage)}">Hompage</head>
 
 <body>
@@ -16,15 +17,15 @@
 				<p class="card-text" th:text=" 'Team: ' + ${athlete.team.name}">Team Name</p>
 			</div>
 		</div>
-		
-		
+
+
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item"> Nato a:
 				<p th:text="'Regione: ' + ${athlete.site.country}"> Regione </p>
 				<p th:text="'Città: ' + ${athlete.site.City}"> città </p>
 				<p th:text="'Cap: ' + ${athlete.site.cap}"> cap </p>
 			</li>
-			
+
 			<li class="list-group-item" th:text="'Nato il: ' + ${athlete.dateOfBirth}"> data di nascita</li>
 			<div th:if="${athlete.team != null}">
 				<li class="list-group-item">
@@ -32,18 +33,18 @@
 					<p th:text="'Data fine contratto: ' + ${athlete.endOfMembership}"> inizio contratto </p>
 				</li>
 			</div>
-			
+
 			<!--solo per admin-->
 			<div sec:authorize="hasAuthority('ADMIN')">
-  				<li class="list-group-item"><a th:href="@{'/athlete/edit/' + ${athlete.id}}" class="card-link">Edit athlete</a></li>
-  				<li class="list-group-item"><a th:href="@{'/athlete/delete/' + ${athlete.id}}" class="card-link">Delete athlete</a></li>
+				<li class="list-group-item"><a th:href="@{'/athlete/edit/' + ${athlete.id}}" class="card-link">Edit athlete</a></li>
+				<li class="list-group-item"><a th:href="@{'/athlete/delete/' + ${athlete.id}}" class="card-link">Delete athlete</a></li>
 			</div>
 		</ul>
 	</div>
- 
- 
- 
- 
-	<footer th:replace="~{fragments/base :: footer}"><footer>
+
+
+	<footer th:replace="~{fragments/base :: footer}">
+		<footer>
 </body>
+
 </html>
