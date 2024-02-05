@@ -1,6 +1,5 @@
 package it.uniroma3.siw.controller;
 
-import java.lang.ProcessBuilder.Redirect;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.controller.validator.AthleteValidator;
 import it.uniroma3.siw.controller.validator.ContractValidator;
@@ -40,7 +40,7 @@ public class TeamController {
 
 
 
-	/*Form per aggiungere un nuovo Istruttore*/
+	/*restituisco una form per aggiungere un nuovo team*/
 	@GetMapping("/add/new")
 	public String formNewTeam(Model model) {
 		model.addAttribute("team", new Team());
@@ -49,7 +49,7 @@ public class TeamController {
 		return TEAM_DIR + "teamAdd";
 	}
 
-	/*Verifico se il nuovo istruttore rispetta i criteri e lo aggiungo al database altirmenti torno alla form*/
+	/*Verifico se il nuovo team rispetta i criteri e lo aggiungo al database altirmenti torno alla form*/
 	@PostMapping("/add")
 	public String newTeam(@Valid @ModelAttribute("team") Team team,BindingResult bindingResult , Model model) {
 		this.teamValidator.validate(team, bindingResult);
@@ -65,21 +65,21 @@ public class TeamController {
 		}
 	}
 
-	/*Mostra la lista di tutti gli atleti*/
+	/*Mostra la lista di tutti i team*/
 	@GetMapping("/all")
 	public String getTeams(Model model) {
 		model.addAttribute("teams", this.teamService.GetAllTeams());
 		return  TEAM_DIR + "teamList";
 	}
 
-	/*Mostra la pagina delll'atleta*/
+	/*Mostra la pagina del team*/
 	@GetMapping("/{id}")
 	public String getTeam(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(id));
 		return TEAM_DIR + "teamProfile";
 	}
 
-	/*Modifico il team*/
+	/*Restituisco una form per modificare il team*/
 	@GetMapping("/edit/{id}")
 	public String formEditTeam(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(id));
@@ -88,7 +88,7 @@ public class TeamController {
 		model.addAttribute("users",presidents);
 		return TEAM_DIR + "teamEdit"; 
 	}
-	
+	/*Aggiorno tutte le informazioni relative al team*/
 	@PostMapping("/update/{id}")
 	public String updateTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -112,12 +112,14 @@ public class TeamController {
 		return TEAM_DIR + "teamEditAthletes";
 	}
 	
+	/*Rimuove l'atleta dal team*/
 	@GetMapping("/removeAthlete/{id}")
 	public String removeAthletesInTeam(@PathVariable("id") Long id, Model model) {
 		this.athleteService.EndOfContract(this.athleteService.GetAthleteById(id));
 		return "redirect:/athlete/" + id;
 	}
 
+	/*Restituisco un form per inserire le date di inizio e fine contratto per l'ateta nel team*/
 	@GetMapping("/addAthlete/{idTeam}/{idAthlete}")
 	public String formAddAthleteInTeam(@PathVariable("idTeam") Long idTeam,@PathVariable("idAthlete") Long idAthlete, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(idTeam));
@@ -145,18 +147,18 @@ public class TeamController {
 		}
 	}
 
-
-
-
-
-	/**********************************************
-	ancora non implementato per rimuoverlo la team
-	 **********************************************/
-
 	/*Cancella il team dal sitema*/
 	@GetMapping("/delete/{id}")
 	public String deleteTeam(@PathVariable("id") Long id, Model model) {
 		this.teamService.deleteById(id);
 		return "redirect:/team/all";
+	}
+	
+	/*Ricerco dei specifici team su dei parametri */
+	@PostMapping("/search")
+	public String searchTeams(@RequestParam(name = "type") String type,@RequestParam(name = "attribute", defaultValue = "") String attribute,
+			Model model) {
+		model.addAttribute("teams",this.teamService.GetAllTeamsByTypeAndAttribute(type,attribute));
+		return TEAM_DIR + "teamList";
 	}
 }

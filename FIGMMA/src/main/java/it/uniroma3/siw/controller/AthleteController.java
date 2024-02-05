@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.controller.validator.AthleteValidator;
 import it.uniroma3.siw.controller.validator.SiteValidator;
@@ -82,14 +83,18 @@ public class AthleteController {
 		return "redirect:/athlete/" + athlete.getId();
 	}
 
-	/**********************************************
-	ancora non implementato per rimuoverlo la team
-	 **********************************************/
-
 	/*Cancella l'atleta dal sitema*/
 	@GetMapping("/delete/{id}")
 	public String deleteAthlete(@PathVariable("id") Long id, Model model) {
 		this.athleteService.deleteById(id);
 		return "redirect:/instructor/all";
+	}
+	
+	/*Ricerco dei specifici ATLETI su dei parametri */
+	@PostMapping("/search")
+	public String searchathletes(@RequestParam(name = "type") String type,@RequestParam(name = "attribute", defaultValue = "") String attribute,
+			Model model) {
+		model.addAttribute("athletes",this.athleteService.GetAllAthletesByTypeAndAttribute(type,attribute));
+		return ATHLETE_DIR + "athleteList";
 	}
 }

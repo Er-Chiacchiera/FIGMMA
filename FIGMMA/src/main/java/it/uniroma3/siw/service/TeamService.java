@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.uniroma3.siw.model.Team;
-import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.model.Athlete;
 import it.uniroma3.siw.model.Contract;
 import it.uniroma3.siw.model.Site;
+import it.uniroma3.siw.model.Team;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -34,7 +34,6 @@ public class TeamService {
 	}
 
 	public Team GetTeamById(Long id) {
-		// TODO Auto-generated method stub
 		return this.teamRepository.findById(id).get();
 	}
 
@@ -78,13 +77,19 @@ public class TeamService {
 		
 	}
 
-	public void removeAthlete(Athlete athlete, Long idTeam) {
-		Team team=this.teamRepository.findById(idTeam).get();
+	public void removeAthlete(Athlete athlete) {
+		Team team=this.teamRepository.findById(athlete.getTeam().getId()).get();
 		team.getAthletes().remove(athlete);
 		this.teamRepository.save(team);
 		
 	}
-	
-	
+
+	public Iterable<Team> GetAllTeamsByTypeAndAttribute(String type, String attribute) {
+			if(type.equals("team"))
+				return this.teamRepository.findByNameContaining(attribute);
+			else
+				return this.teamRepository.findByPresidentNomeContaining(attribute);
+		
+	}
 
 }

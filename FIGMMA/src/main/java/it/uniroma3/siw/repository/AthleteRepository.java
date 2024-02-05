@@ -23,5 +23,11 @@ public interface AthleteRepository extends CrudRepository<Athlete, Long> {
     @Query("SELECT a FROM Athlete a WHERE a.endOfMembership <= :currentDate")
     List<Athlete> findAthletesWithExpiredMembership(@Param("currentDate") LocalDate currentDate);
 
+	public Iterable<Athlete> findByNameContaining(String attribute);
+
+	public Iterable<Athlete> findBySurnameContaining(String attribute);
+
+	public Iterable<Athlete> findByTeamNameContaining(String attribute);
+
 
 }

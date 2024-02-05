@@ -13,7 +13,9 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
 	public List<Athlete> findByName(String surname);
 	
 	public boolean existsByName(String name);
-	
 
+	public Iterable<Team> findByNameContaining(String attribute);
+	
+	public Iterable<Team> findByPresidentNomeContaining(String attribute);
 
 }

@@ -35,6 +35,7 @@ public class AthleteService {
 	}
 
 	public void deleteById(Long id) {
+		this.teamService.removeAthlete(this.athleteRepository.findById(id).get());
 		this.athleteRepository.deleteById(id);	
 	}
 
@@ -78,11 +79,21 @@ public class AthleteService {
 	public void EndOfContract( Athlete athlete) {
 		athlete.setEndOfMembership(null);
 		athlete.setStartOfMembership(null);
-		this.teamService.removeAthlete(athlete,athlete.getTeam().getId());
+		this.teamService.removeAthlete(athlete);
 		athlete.setTeam(null);
 		this.athleteRepository.save(athlete);
 
 	}
+
+	public Iterable<Athlete> GetAllAthletesByTypeAndAttribute(String type, String attribute) {
+		if(type.equals("name"))
+			return this.athleteRepository.findByNameContaining(attribute);
+		else if (type.equals("surname"))
+			return this.athleteRepository.findBySurnameContaining(attribute);
+		else
+			return this.athleteRepository.findByTeamNameContaining(attribute);
+	
+}
 
 
 
