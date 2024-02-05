@@ -55,7 +55,7 @@
 								<p class="card-text">Nessun contratto</p>
 							</div>
 							<div th:unless="${athlete.team == null}">
-								<p class="card-text" th:text=" 'Team: ' + ${athlete.team}">Specialità</p>
+								<p class="card-text" th:text=" 'Team: ' + ${athlete.team.name}">Name team</p>
 							</div>
 						</div>
 					</a>

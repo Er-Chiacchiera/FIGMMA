@@ -1,10 +1,14 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Team;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.model.Athlete;
+import it.uniroma3.siw.model.Contract;
 import it.uniroma3.siw.model.Site;
 import it.uniroma3.siw.repository.TeamRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +18,7 @@ import jakarta.validation.Valid;
 public class TeamService {
 	@Autowired TeamRepository teamRepository;
 	@Autowired UserService userService;
+	@Autowired AthleteService athleteService;
 
 	@Transactional
 	public void addNewTeam(Team team) {
@@ -34,22 +39,49 @@ public class TeamService {
 	}
 
 	public void deleteById(Long id) {
-		this.teamRepository.deleteById(id);	
+		List<Athlete> athletes =this.GetTeamById(id).getAthletes();
+		for(Athlete athlete:athletes)
+			this.athleteService.EndOfContract(athlete);
+		this.userService.removePresidentFromTeam(this.GetTeamById(id).getPresident().getId());;
+		this.teamRepository.deleteById(id);
 	}
 
 	public void updateTeam(@Valid Team team) {
-		
+		System.out.println("Sono entrato nel valid\n\n\n\n");
 		Team oldTeam =this.teamRepository.findById(team.getId()).get();
 		oldTeam.setName(team.getName());
+		System.out.println("primo step fatto\n\n\n\n");
+		if(team.getPresident().getId()!=oldTeam.getPresident().getId()) {
+			this.userService.changePresident(oldTeam.getPresident().getId(),team.getPresident().getId());
+			oldTeam.setPresident(team.getPresident());
+			System.out.println("secondo step fatto\n\n\n\n");
+		}
 		oldTeam.setDateOfCreation(team.getDateOfCreation());
 		Site oldSite = oldTeam.getSite();
 		oldSite.setCountry(team.getSite().getCountry());
 		oldSite.setCity(team.getSite().getCity());
 		oldSite.setCap(team.getSite().getCap());
 		oldSite.setAddress(team.getSite().getAddress());
-		oldTeam.setSite(oldSite);
 		this.teamRepository.save(oldTeam);
 		
+		
+	}
+
+	public void addAtleteinTeam(Long idTeam,  Long idAthlete,Contract contract) {
+		Athlete athlete = this.athleteService.GetAthleteById(idAthlete);
+		Team team = this.teamRepository.findById(idTeam).get();
+		
+		
+		this.athleteService.addAthleteInTeam(team,idAthlete,contract);
+		team.getAthletes().add(athlete);
+		this.teamRepository.save(team);
+		
+	}
+
+	public void removeAthlete(Athlete athlete, Long idTeam) {
+		Team team=this.teamRepository.findById(idTeam).get();
+		team.getAthletes().remove(athlete);
+		this.teamRepository.save(team);
 		
 	}
 	

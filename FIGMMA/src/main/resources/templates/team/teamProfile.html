@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=Homepage)}">Hompage</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+
+	<div class="container mt-4">
+		<div class="row">
+			
+			<!-- Colonna 1 -->
+			<div class="col-md-6">
+				<div class="card mx-auto" style="width: 18rem;">
+					<img src="..." class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title" th:text="'Team: ' + ${team.name}">Card title</h5>
+						<p th:text="'Presidente: ' + ${team.president.nome} + ' ' + ${team.president.cognome} ">President name</p>
+					</div>			
+					
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"> Situata in :
+							<p th:text="'Regione: ' + ${team.site.country}"> Regione </p>
+							<p th:text="'Città: ' + ${team.site.City}"> città </p>
+							<p th:text="'Cap: ' + ${team.site.cap}"> cap </p>
+						</li>
+											
+						<li class="list-group-item" th:text="'Fondata il : ' + ${team.dateOfCreation}"> data di nascita</li>
+						
+						<div sec:authorize="hasAuthority('ADMIN')">
+  							<li class="list-group-item"><a th:href="@{'/team/edit/' + ${team.id}}" class="card-link">Edit team</a></li>
+  							<li class="list-group-item"><a th:href="@{'/team/delete/' + ${team.id}}" class="card-link">Delete team</a></li>
+						</div>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Colonna 2 -->
+			<div class="col-md-6">
+				<h5> I nostri atleti </h5>
+				
+				<ol class="list-group list-group-numbered" th:each="athlete : ${team.athletes}"> 
+  					<li class="list-group-item" >
+						<span th:text="${athlete.name} +' '+${athlete.surname}">Nome e cognome atleta</span>
+						<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
+					</li>
+				</ol>
+				
+			</div>
+		</div>
+	</div>
+
+
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+</body>
+</html>

@@ -9,18 +9,34 @@
 	
 	
 	<h4> Atleti nel team:</h4>
-	<ul class="list-group" th:each="athlete : ${team.athletes}"> 
-  		<li class="list-group-item" th:text="${athlete.name} +' '+${athlete.surname}">atleti nel team</li>
-	</ul>
-	
-	
+	<div th:if=${team.athletes.isEmpty()}>
+		<span>Non ci sono Atleti nel team</span>
+	</div>
+		
+	<div th:unless=${team.athletes.isEmpty()}>
+		<ul class="list-group" th:each="athlete : ${team.athletes}"> 
+			<li class="list-group-item">
+					<span th:text="${athlete.name} +' '+${athlete.surname}"> atleti con contratto </span>
+					<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/removeAthlete/' + ${athlete.id}}">Remove athlete</a>
+			</li>
+		</ul>
+	</div>
+
+
 	<h4> Atleti Disponibili:</h4>
-	<ul class="list-group" th:each="athleteFree : ${athletesFree}">
-  		<li class="list-group-item">
-  			<span th:text="${athleteFree.name} +' '+${athleteFree.surname}"> atleti senza contratto </span>
-  		</li>
-	</ul>
+	<div th:if=${athletesFree.isEmpty()}>
+		<span>Non ci sono Atleti senza contratto</span>
+	</div>
 	
+	<div th:unless=${athletesFree.isEmpty()}>
+		<ul class="list-group" th:each="athleteFree : ${athletesFree}">
+			<li class="list-group-item">
+					<span th:text="${athleteFree.name} +' '+${athleteFree.surname}"> atleti senza contratto </span>
+					<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/addAthlete/' + ${team.id} +'/'+ ${athleteFree.id}}">Add athlete</a>
+			</li>
+		</ul>
+	</div>
+		
 	
  
  

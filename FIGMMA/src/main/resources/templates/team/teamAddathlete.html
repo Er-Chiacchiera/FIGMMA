@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/base :: head(title=Homepage)}">Hompage</head>
+
+<body>
+	<nav th:replace="~{fragments/base :: navbar}"></nav>
+	
+	<div class="d-flex container justify-content-center mt-4">
+		<div class="col-6 card border border-primary p-3 shadow" >	
+			<!--Form per aggiungere un nuovo Atleta ad un Team-->
+			<form th:action="@{'/team/addAthlete/' + ${team.id} + '/' + ${athlete.id}}" method="POST" th:object="${contract}" class="row g-3">
+				<div th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+				</div>
+				
+				<div th:text="'Aggiungere il lottatore ' + ${athlete.name} + ' ' + ${athlete.surname} + ' al team ' + ${team.name}"></div>
+				
+				<div class="col-md-6">
+					<label for="startOfMembership" class="form-label">Data inizio contratto</label>
+					<input class="form-control" required type="date" th:field="${contract.startOfMembership}" id="startOfMembership" placeholder="dd/mm/yyyy"/>
+					<span th:if="${#fields.hasErrors('startOfMembership')}" th:errors="${contract.startOfMembership}"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label for="endOfMembership" class="form-label">Data fine contratto</label>
+					<input class="form-control" required type="date" th:field="${contract.endOfMembership}" id="endOfMembership" placeholder="dd/mm/yyyy"/>
+					<span th:if="${#fields.hasErrors('endOfMembership')}" th:errors="${contract.endOfMembership}"></span>
+				</div>
+				
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+ 
+ 
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+</body>
+</html>

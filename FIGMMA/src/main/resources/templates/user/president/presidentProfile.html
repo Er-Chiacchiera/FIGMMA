@@ -65,9 +65,10 @@
 							<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/editAthletes/' + ${president.team.id}}">Edit Athletes Team</a>
 						</div>
 						<ol class="list-group list-group-numbered" th:each="athlete : ${president.team.athletes}"> 
-  							<li class="list-group-item" th:text="${athlete.name} +' '+${athlete.surname} " >A list item</li>
-  							<li class="list-group-item">A list item</li>
-							<li class="list-group-item">A list item</li>
+  							<li class="list-group-item" >
+								<span th:text="${athlete.name} +' '+${athlete.surname}">Nome e cognome atleta</span>
+								<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
+							</li>
 						</ol>
 						
 					</div>

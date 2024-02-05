@@ -1,5 +1,8 @@
 package it.uniroma3.siw.controller;
 
+import java.lang.ProcessBuilder.Redirect;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,16 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import it.uniroma3.siw.controller.validator.AthleteValidator;
+import it.uniroma3.siw.controller.validator.ContractValidator;
 import it.uniroma3.siw.controller.validator.SiteValidator;
 import it.uniroma3.siw.controller.validator.TeamValidator;
-import it.uniroma3.siw.model.Athlete;
+import it.uniroma3.siw.model.Contract;
 import it.uniroma3.siw.model.Team;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.AthleteService;
 import it.uniroma3.siw.service.TeamService;
 import it.uniroma3.siw.service.UserService;
 import jakarta.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/team")
@@ -29,6 +33,8 @@ public class TeamController {
 	@Autowired SiteValidator siteValidator;
 	@Autowired UserService userService;
 	@Autowired AthleteService athleteService;
+	@Autowired AthleteValidator athleteValidator;
+	@Autowired ContractValidator contractValidator;
 
 	public static final String TEAM_DIR = "team/";
 
@@ -39,9 +45,6 @@ public class TeamController {
 	public String formNewTeam(Model model) {
 		model.addAttribute("team", new Team());
 		List<User> users=this.userService.findPresidentsWithoutTeam();
-		//User u=users.get(0);
-		//System.out.println(u.getNome());
-		//System.out.println(users.isEmpty());
 		model.addAttribute("users",users);
 		return TEAM_DIR + "teamAdd";
 	}
@@ -76,22 +79,16 @@ public class TeamController {
 		return TEAM_DIR + "teamProfile";
 	}
 
-
+	/*Modifico il team*/
 	@GetMapping("/edit/{id}")
 	public String formEditTeam(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(id));
+		List<User> presidents =this.userService.findPresidentsWithoutTeam();
+		presidents.add(this.teamService.GetTeamById(id).getPresident());
+		model.addAttribute("users",presidents);
 		return TEAM_DIR + "teamEdit"; 
 	}
-
-	@GetMapping("/editAthletes/{id}")
-	public String formEditAthletesInTeam(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("team", this.teamService.GetTeamById(id));
-		model.addAttribute("AthletesFree", this.athleteService.getAllFreeAthletes());
-		List<Athlete> atleti = this.athleteService.getAllFreeAthletes();
-		System.out.println(atleti.get(0).getName());
-		return TEAM_DIR + "teamEditAthletes";
-	}
-
+	
 	@PostMapping("/update/{id}")
 	public String updateTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -103,15 +100,63 @@ public class TeamController {
 		this.teamService.updateTeam(team);
 		return "redirect:/team/" + team.getId();
 	}
+	
+
+	/*Modifico gli atleti nel team*/
+	@GetMapping("/editAthletes/{id}")
+	public String formEditAthletesInTeam(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("team", this.teamService.GetTeamById(id));
+		model.addAttribute("athletesFree", this.athleteService.getAllFreeAthletes());
+		//List<Athlete> atleti = this.athleteService.getAllFreeAthletes();
+		//System.out.println(atleti.get(0).getName());
+		return TEAM_DIR + "teamEditAthletes";
+	}
+	
+	@GetMapping("/removeAthlete/{id}")
+	public String removeAthletesInTeam(@PathVariable("id") Long id, Model model) {
+		this.athleteService.EndOfContract(this.athleteService.GetAthleteById(id));
+		return "redirect:/athlete/" + id;
+	}
+
+	@GetMapping("/addAthlete/{idTeam}/{idAthlete}")
+	public String formAddAthleteInTeam(@PathVariable("idTeam") Long idTeam,@PathVariable("idAthlete") Long idAthlete, Model model) {
+		model.addAttribute("team", this.teamService.GetTeamById(idTeam));
+		model.addAttribute("athlete", this.athleteService.GetAthleteById(idAthlete));
+		model.addAttribute("contract",  new Contract());
+		return TEAM_DIR + "teamAddAthlete";
+	}
+
+	/*Aggiungo un atleta senza contatto ad un team*/
+	@PostMapping("/addAthlete/{idTeam}/{idAthlete}")
+	public String addAthleteInTeam(@PathVariable("idTeam") Long idTeam, @PathVariable("idAthlete") Long idAthlete, @Valid @ModelAttribute("contract") Contract contract, BindingResult bindingResult , Model model) {
+		System.out.println("Controllo le date per metterlo nel tem \n");
+		this.contractValidator.validate(contract, bindingResult);
+		System.out.println(bindingResult);
+		System.out.println("ho fatto il bindingResult \n\n\n\n\n\n");
+		if (!bindingResult.hasErrors()) {
+			this.teamService.addAtleteinTeam(idTeam,idAthlete,contract);
+			return "redirect:/team/editAthletes/" + idTeam;
+		} 
+
+		else {
+			model.addAttribute("team", this.teamService.GetTeamById(idTeam));
+			model.addAttribute("athlete", this.athleteService.GetAthleteById(idAthlete));
+			return TEAM_DIR + "teamAddAthlete";
+		}
+	}
+
+
+
+
 
 	/**********************************************
 	ancora non implementato per rimuoverlo la team
 	 **********************************************/
 
-	/*Cancella l'atleta dal sitema*/
+	/*Cancella il team dal sitema*/
 	@GetMapping("/delete/{id}")
 	public String deleteTeam(@PathVariable("id") Long id, Model model) {
 		this.teamService.deleteById(id);
-		return "redirect:/instructor/all";
+		return "redirect:/team/all";
 	}
 }

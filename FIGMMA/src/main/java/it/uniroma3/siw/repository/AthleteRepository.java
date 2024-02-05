@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import it.uniroma3.siw.model.Athlete;
 
@@ -18,6 +19,9 @@ public interface AthleteRepository extends CrudRepository<Athlete, Long> {
     List<Athlete> findAllFreeAthletes();
 	
 	public List<Athlete> findByName(String name);
+	
+    @Query("SELECT a FROM Athlete a WHERE a.endOfMembership <= :currentDate")
+    List<Athlete> findAthletesWithExpiredMembership(@Param("currentDate") LocalDate currentDate);
 
 
 }

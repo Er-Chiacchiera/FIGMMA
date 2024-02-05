@@ -7,7 +7,7 @@
 	
 	<div class="d-flex container justify-content-center mt-4">
 		<div class="col-6 card border border-primary p-3 shadow" >	
-			<!--Form per aggiungere un nuovo Atleta-->
+			<!--Form per aggiungere un nuovo Team-->
 			<form th:action="@{/team/add}" method="POST" th:object="${team}" class="row g-3">
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>

@@ -60,5 +60,20 @@ public class UserService {
 		List<User> presidents=this.userRepository.findPresidentsWithoutTeam();
 		return presidents;
 	}
+	@Transactional
+	public void removePresidentFromTeam(Long idPresident) {
+		User president= this.getUser(idPresident);
+		president.setTeam(null);
+		this.saveUser(president);
+		
+	}
+
+	public void changePresident(Long idOld, Long idNew) {
+		User newPresident=this.getUser(idNew);
+		newPresident.setTeam(this.getUser(idOld).getTeam());
+		System.out.println("sono nello user service\n\n\n");
+		removePresidentFromTeam(idOld);
+		this.userRepository.save(newPresident);
+	}
 
 }
