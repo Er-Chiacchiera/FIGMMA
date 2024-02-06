@@ -28,67 +28,77 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/team")
 public class TeamController {
-	@Autowired TeamValidator teamValidator;
-	@Autowired TeamService teamService;
-	@Autowired SiteValidator siteValidator;
-	@Autowired UserService userService;
-	@Autowired AthleteService athleteService;
-	@Autowired AthleteValidator athleteValidator;
-	@Autowired ContractValidator contractValidator;
+	@Autowired
+	TeamValidator teamValidator;
+	@Autowired
+	TeamService teamService;
+	@Autowired
+	SiteValidator siteValidator;
+	@Autowired
+	UserService userService;
+	@Autowired
+	AthleteService athleteService;
+	@Autowired
+	AthleteValidator athleteValidator;
+	@Autowired
+	ContractValidator contractValidator;
 
 	public static final String TEAM_DIR = "team/";
 
-
-
-	/*restituisco una form per aggiungere un nuovo team*/
+	/* restituisco una form per aggiungere un nuovo team */
 	@GetMapping("/add/new")
 	public String formNewTeam(Model model) {
 		model.addAttribute("team", new Team());
-		List<User> users=this.userService.findPresidentsWithoutTeam();
-		model.addAttribute("users",users);
+		List<User> users = this.userService.findPresidentsWithoutTeam();
+		model.addAttribute("users", users);
 		return TEAM_DIR + "teamAdd";
 	}
 
-	/*Verifico se il nuovo team rispetta i criteri e lo aggiungo al database altirmenti torno alla form*/
+	/*
+	 * Verifico se il nuovo team rispetta i criteri e lo aggiungo al database
+	 * altirmenti torno alla form
+	 */
 	@PostMapping("/add")
-	public String newTeam(@Valid @ModelAttribute("team") Team team,BindingResult bindingResult , Model model) {
+	public String newTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
 		this.teamValidator.validate(team, bindingResult);
-		this.siteValidator.validateAddress(team.getSite(),bindingResult);
+		this.siteValidator.validateAddress(team.getSite(), bindingResult);
 		System.out.println(bindingResult);
 		if (!bindingResult.hasErrors()) {
 			this.teamService.addNewTeam(team);
 			model.addAttribute("team", team);
 			return TEAM_DIR + "teamProfile";
-		} 
-		else {
+		} else {
+			List<User> users = this.userService.findPresidentsWithoutTeam();
+			model.addAttribute("users", users);
 			return TEAM_DIR + "teamAdd";
 		}
 	}
 
-	/*Mostra la lista di tutti i team*/
+	/* Mostra la lista di tutti i team */
 	@GetMapping("/all")
 	public String getTeams(Model model) {
 		model.addAttribute("teams", this.teamService.GetAllTeams());
-		return  TEAM_DIR + "teamList";
+		return TEAM_DIR + "teamList";
 	}
 
-	/*Mostra la pagina del team*/
+	/* Mostra la pagina del team */
 	@GetMapping("/{id}")
 	public String getTeam(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(id));
 		return TEAM_DIR + "teamProfile";
 	}
 
-	/*Restituisco una form per modificare il team*/
+	/* Restituisco una form per modificare il team */
 	@GetMapping("/edit/{id}")
 	public String formEditTeam(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(id));
-		List<User> presidents =this.userService.findPresidentsWithoutTeam();
+		List<User> presidents = this.userService.findPresidentsWithoutTeam();
 		presidents.add(this.teamService.GetTeamById(id).getPresident());
-		model.addAttribute("users",presidents);
-		return TEAM_DIR + "teamEdit"; 
+		model.addAttribute("users", presidents);
+		return TEAM_DIR + "teamEdit";
 	}
-	/*Aggiorno tutte le informazioni relative al team*/
+
+	/* Aggiorno tutte le informazioni relative al team */
 	@PostMapping("/update/{id}")
 	public String updateTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -100,45 +110,49 @@ public class TeamController {
 		this.teamService.updateTeam(team);
 		return "redirect:/team/" + team.getId();
 	}
-	
 
-	/*Modifico gli atleti nel team*/
+	/* Modifico gli atleti nel team */
 	@GetMapping("/editAthletes/{id}")
 	public String formEditAthletesInTeam(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(id));
 		model.addAttribute("athletesFree", this.athleteService.getAllFreeAthletes());
-		//List<Athlete> atleti = this.athleteService.getAllFreeAthletes();
-		//System.out.println(atleti.get(0).getName());
+		// List<Athlete> atleti = this.athleteService.getAllFreeAthletes();
+		// System.out.println(atleti.get(0).getName());
 		return TEAM_DIR + "teamEditAthletes";
 	}
-	
-	/*Rimuove l'atleta dal team*/
+
+	/* Rimuove l'atleta dal team */
 	@GetMapping("/removeAthlete/{id}")
 	public String removeAthletesInTeam(@PathVariable("id") Long id, Model model) {
 		this.athleteService.EndOfContract(this.athleteService.GetAthleteById(id));
 		return "redirect:/athlete/" + id;
 	}
 
-	/*Restituisco un form per inserire le date di inizio e fine contratto per l'ateta nel team*/
+	/*
+	 * Restituisco un form per inserire le date di inizio e fine contratto per
+	 * l'ateta nel team
+	 */
 	@GetMapping("/addAthlete/{idTeam}/{idAthlete}")
-	public String formAddAthleteInTeam(@PathVariable("idTeam") Long idTeam,@PathVariable("idAthlete") Long idAthlete, Model model) {
+	public String formAddAthleteInTeam(@PathVariable("idTeam") Long idTeam, @PathVariable("idAthlete") Long idAthlete,
+			Model model) {
 		model.addAttribute("team", this.teamService.GetTeamById(idTeam));
 		model.addAttribute("athlete", this.athleteService.GetAthleteById(idAthlete));
-		model.addAttribute("contract",  new Contract());
+		model.addAttribute("contract", new Contract());
 		return TEAM_DIR + "teamAddAthlete";
 	}
 
-	/*Aggiungo un atleta senza contatto ad un team*/
+	/* Aggiungo un atleta senza contatto ad un team */
 	@PostMapping("/addAthlete/{idTeam}/{idAthlete}")
-	public String addAthleteInTeam(@PathVariable("idTeam") Long idTeam, @PathVariable("idAthlete") Long idAthlete, @Valid @ModelAttribute("contract") Contract contract, BindingResult bindingResult , Model model) {
+	public String addAthleteInTeam(@PathVariable("idTeam") Long idTeam, @PathVariable("idAthlete") Long idAthlete,
+			@Valid @ModelAttribute("contract") Contract contract, BindingResult bindingResult, Model model) {
 		System.out.println("Controllo le date per metterlo nel tem \n");
 		this.contractValidator.validate(contract, bindingResult);
 		System.out.println(bindingResult);
 		System.out.println("ho fatto il bindingResult \n\n\n\n\n\n");
 		if (!bindingResult.hasErrors()) {
-			this.teamService.addAtleteinTeam(idTeam,idAthlete,contract);
+			this.teamService.addAtleteinTeam(idTeam, idAthlete, contract);
 			return "redirect:/team/editAthletes/" + idTeam;
-		} 
+		}
 
 		else {
 			model.addAttribute("team", this.teamService.GetTeamById(idTeam));
@@ -147,18 +161,18 @@ public class TeamController {
 		}
 	}
 
-	/*Cancella il team dal sitema*/
+	/* Cancella il team dal sitema */
 	@GetMapping("/delete/{id}")
 	public String deleteTeam(@PathVariable("id") Long id, Model model) {
 		this.teamService.deleteById(id);
 		return "redirect:/team/all";
 	}
-	
-	/*Ricerco dei specifici team su dei parametri */
+
+	/* Ricerco dei specifici team su dei parametri */
 	@PostMapping("/search")
-	public String searchTeams(@RequestParam(name = "type") String type,@RequestParam(name = "attribute", defaultValue = "") String attribute,
-			Model model) {
-		model.addAttribute("teams",this.teamService.GetAllTeamsByTypeAndAttribute(type,attribute));
+	public String searchTeams(@RequestParam(name = "type") String type,
+			@RequestParam(name = "attribute", defaultValue = "") String attribute,Model model) {
+		model.addAttribute("teams", this.teamService.GetAllTeamsByTypeAndAttribute(type, attribute));
 		return TEAM_DIR + "teamList";
 	}
 }

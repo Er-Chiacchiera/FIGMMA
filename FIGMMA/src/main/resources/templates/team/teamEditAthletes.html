@@ -1,23 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/base :: head(title=prova)}">Hompage</head>
+
+<head th:replace="~{fragments/base :: head(title='Modifica composizione team'')}">Hompage</head>
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
-	
+
 	<h1 th:text="${team.name}"> nome team</h1>
-	
-	
+
+
 	<h4> Atleti nel team:</h4>
 	<div th:if=${team.athletes.isEmpty()}>
 		<span>Non ci sono Atleti nel team</span>
 	</div>
-		
+
 	<div th:unless=${team.athletes.isEmpty()}>
-		<ul class="list-group" th:each="athlete : ${team.athletes}"> 
+		<ul class="list-group" th:each="athlete : ${team.athletes}">
 			<li class="list-group-item">
-					<span th:text="${athlete.name} +' '+${athlete.surname}"> atleti con contratto </span>
-					<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/removeAthlete/' + ${athlete.id}}">Remove athlete</a>
+				<span th:text="${athlete.name} +' '+${athlete.surname}"> atleti con contratto </span>
+				<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Remove
+					athlete </a>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">Elimina Team</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body" th:text="'Sicuro di voler eliminare il contratto di ' + ${athlete.name}">
+								...
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+								<a type="button" class="btn btn-primary"
+									th:href="@{'/team/removeAthlete/' + ${athlete.id}}">Si</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -27,19 +50,22 @@
 	<div th:if=${athletesFree.isEmpty()}>
 		<span>Non ci sono Atleti senza contratto</span>
 	</div>
-	
+
 	<div th:unless=${athletesFree.isEmpty()}>
 		<ul class="list-group" th:each="athleteFree : ${athletesFree}">
 			<li class="list-group-item">
-					<span th:text="${athleteFree.name} +' '+${athleteFree.surname}"> atleti senza contratto </span>
-					<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/addAthlete/' + ${team.id} +'/'+ ${athleteFree.id}}">Add athlete</a>
+				<span th:text="${athleteFree.name} +' '+${athleteFree.surname}"> atleti senza contratto </span>
+				<a type="button" class="btn btn-outline-primary me-2"
+					th:href="@{'/team/addAthlete/' + ${team.id} +'/'+ ${athleteFree.id}}">Add athlete</a>
 			</li>
 		</ul>
 	</div>
-		
-	
- 
- 
-	<footer th:replace="~{fragments/base :: footer}"><footer>
+
+
+
+
+	<footer th:replace="~{fragments/base :: footer}">
+		<footer>
 </body>
+
 </html>
