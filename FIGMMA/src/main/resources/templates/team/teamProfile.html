@@ -12,7 +12,8 @@
 			<!-- Colonna 1 -->
 			<div class="col-md-6">
 				<div class="card mx-auto" style="width: 18rem;">
-					<img src="..." class="card-img-top" alt="...">
+					<img th:if="${team.pathImg != null}" th:src="@{'/images/team/' + ${team.pathImg}}" class="card-img-top" alt="...">
+					<img th:unless="${team.pathImg != null}" src="/images/team/team.jpg" class="card-img-top" alt="...">
 					<div class="card-body">
 						<h5 class="card-title" th:text="'Team: ' + ${team.name}">Card title</h5>
 						<p th:text="'Presidente: ' + ${team.president.nome} + ' ' + ${team.president.cognome}">

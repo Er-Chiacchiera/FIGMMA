@@ -50,6 +50,8 @@ public class User {
 	@OneToOne
 	private Team team;
 	
+	private String pathImg;
+	
 	public User() {
 		this.site=new Site();
 	}
@@ -118,6 +120,14 @@ public class User {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+
+	public String getPathImg() {
+		return pathImg;
+	}
+
+	public void setPathImg(String pathImg) {
+		this.pathImg = pathImg;
 	}
 	
 	

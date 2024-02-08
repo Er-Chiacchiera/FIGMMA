@@ -43,6 +43,8 @@ public class Team {
 
 	@OneToMany(mappedBy = "team")
 	private List<Athlete> athletes;
+	
+	private String pathImg;
 
 	public Team() {
 		this.site= new Site();
@@ -101,6 +103,16 @@ public class Team {
 	public void setPresident(User president) {
 		this.president = president;
 	}
+
+	public String getPathImg() {
+		return pathImg;
+	}
+
+
+	public void setPathImg(String pathImg) {
+		this.pathImg = pathImg;
+	}
+
 
 	/***************** hashCode e equals metod *****************/
 

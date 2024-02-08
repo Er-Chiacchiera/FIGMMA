@@ -49,6 +49,8 @@ public class Athlete {
 
 	@ManyToOne
 	private Team team;
+	
+	private String pathImg;
 
 	public Athlete() {
 		this.site=new Site();
@@ -118,6 +120,14 @@ public class Athlete {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+
+	public String getPathImg() {
+		return pathImg;
+	}
+
+	public void setPathImg(String pathImg) {
+		this.pathImg = pathImg;
 	}
 
 	/***************** hashCode e equals metod *****************/

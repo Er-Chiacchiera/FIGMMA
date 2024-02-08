@@ -9,7 +9,7 @@
 	<div class="d-flex container justify-content-center mt-4">
 		<div class="col-6 card border border-primary p-3 shadow">
 			<!--Form per aggiungere un nuovo Team-->
-			<form th:action="@{/team/add}" method="POST" th:object="${team}" class="row g-3">
+			<form th:action="@{/team/add}" method="POST" th:object="${team}" class="row g-3" enctype="multipart/form-data">
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
@@ -22,7 +22,7 @@
 
 				<div class="col-md-6">
 					<label for="dateOfCreation" class="form-label">Data di fondazione</label>
-					<input class="form-control" required type="date" th:field="*{dateOfCreation}" id="dateOfCreation" placeholder="dd/mm/yyyy" />
+					<input class="form-control" required type="date" th:field="*{dateOfCreation}" id="dateOfCreation" placeholder="dd/mm/yyyy" enctype="multipart/form-data"/>
 					<span th:if="${#fields.hasErrors('dateOfCreation')}" th:errors="*{dateOfCreation}"></span>
 				</div>
 
@@ -34,6 +34,12 @@
 							</option>
 						</div>
 					</select>
+				</div>
+				
+				<!--Inserimento della foto-->
+				<div class="mb-3">
+					<label class="form-label" for="file">Immagine di profilo</label>
+					<input type="file" class="form-control" id="inputImg" name="file">
 				</div>
 
 

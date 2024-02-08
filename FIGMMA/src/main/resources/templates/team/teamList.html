@@ -49,7 +49,8 @@
 			<div class="col mb-4 d-flex justify-content-center" th:each="team : ${teams}">
 				<div class="card" style="width: 18rem;">
 					<a class="text-reset text-decoration-none" th:href="@{'/team/' + ${team.id}}">
-						<img src="..." class="card-img-top" alt="...">
+						<img th:if="${team.pathImg != null}" th:src="@{'/images/team/' + ${team.pathImg}}" class="card-img-top" alt="...">
+						<img th:unless="${team.pathImg != null}" src="/images/team/team.jpg" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title" th:text="${team.name} ">Card title</h5>
 							<p class="card-text" th:text=" 'Presidente: ' + ${team.president.nome} + ' ' +${team.president.cognome}">Typology</p>

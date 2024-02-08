@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.controller.validator.AthleteValidator;
 import it.uniroma3.siw.controller.validator.ContractValidator;
@@ -20,6 +21,7 @@ import it.uniroma3.siw.controller.validator.TeamValidator;
 import it.uniroma3.siw.model.Contract;
 import it.uniroma3.siw.model.Team;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.presentation.FileStorer;
 import it.uniroma3.siw.service.AthleteService;
 import it.uniroma3.siw.service.TeamService;
 import it.uniroma3.siw.service.UserService;
@@ -59,12 +61,19 @@ public class TeamController {
 	 * altirmenti torno alla form
 	 */
 	@PostMapping("/add")
-	public String newTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
+	public String newTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, @RequestParam("file") MultipartFile file, Model model) {
 		this.teamValidator.validate(team, bindingResult);
 		this.siteValidator.validateAddress(team.getSite(), bindingResult);
 		System.out.println(bindingResult);
 		if (!bindingResult.hasErrors()) {
 			this.teamService.addNewTeam(team);
+			
+			if(!file.isEmpty()) {
+				System.out.println("devo salvare la foto \n\n\n\n");
+				team.setPathImg(FileStorer.store(file,"team",team.getId()));
+				this.teamService.updateTeam(team);
+			}
+			
 			model.addAttribute("team", team);
 			return TEAM_DIR + "teamProfile";
 		} else {

@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.controller.validator.AthleteValidator;
 import it.uniroma3.siw.controller.validator.SiteValidator;
 import it.uniroma3.siw.model.Athlete;
+import it.uniroma3.siw.presentation.FileStorer;
 import it.uniroma3.siw.service.AthleteService;
 import jakarta.validation.Valid;
 
@@ -37,14 +39,22 @@ public class AthleteController {
 
 	/*Verifico se il nuovo istruttore rispetta i criteri e lo aggiungo al database altirmenti torno alla form*/
 	@PostMapping("/add")
-	public String newAthlete(@Valid @ModelAttribute("athlete") Athlete athlete,BindingResult bindingResult , Model model) {
+	public String newAthlete(@Valid @ModelAttribute("athlete") Athlete athlete,BindingResult bindingResult , @RequestParam("file") MultipartFile file, Model model) {
 		this.athleteValidator.validate(athlete, bindingResult);
 		this.siteValidator.validate(athlete.getSite(),bindingResult);
+
 		if (!bindingResult.hasErrors()) {
 			this.athleteService.addNewAthlete(athlete);
+
+			if(!file.isEmpty()) {
+				System.out.println("devo salvare la foto \n\n\n\n");
+				athlete.setPathImg(FileStorer.store(file,"athlete",athlete.getId()));
+				this.athleteService.updateAthlete(athlete);
+			}
+
 			model.addAttribute("athlete", athlete);
 			return ATHLETE_DIR + "athleteProfile";
-		} 
+		}
 		else {
 			return ATHLETE_DIR + "athleteAdd";
 		}
@@ -72,13 +82,14 @@ public class AthleteController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, BindingResult bindingResult, Model model) {
+	public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, @RequestParam("file")MultipartFile file, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
-			System.out.println("sono negli errori");
-			System.out.println(bindingResult);
 			return ATHLETE_DIR + "athleteEdit";
 		}
-		System.out.println("non sono negli errori!!!!!!!!!\n");
+		if(!file.isEmpty()) {
+			athlete.setPathImg(FileStorer.store(file, "athlete",athlete.getId()));
+		}
+		
 		this.athleteService.updateAthlete(athlete);
 		return "redirect:/athlete/" + athlete.getId();
 	}
@@ -89,7 +100,7 @@ public class AthleteController {
 		this.athleteService.deleteById(id);
 		return "redirect:/athlete/all";
 	}
-	
+
 	/*Ricerco dei specifici ATLETI su dei parametri */
 	@PostMapping("/search")
 	public String searchathletes(@RequestParam(name = "type") String type,@RequestParam(name = "attribute", defaultValue = "") String attribute,

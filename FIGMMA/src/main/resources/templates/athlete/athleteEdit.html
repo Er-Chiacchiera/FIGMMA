@@ -10,7 +10,7 @@
 		<div class="col-6 card border border-primary p-3 shadow">
 			<!--Form per aggiungere un nuovo Istruttore-->
 			<form th:action="@{'/athlete/update/' + ${athlete.id}}" method="POST" th:object="${athlete}"
-				class="row g-3">
+				class="row g-3" enctype="multipart/form-data">
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
@@ -32,6 +32,12 @@
 					<input class="form-control" required type="date" th:field="*{DateOfBirth}" id="DateOfBirth"
 						placeholder="dd/mm/yyyy" />
 					<span th:if="${#fields.hasErrors('DateOfBirth')}" th:errors="*{DateOfBirth}"></span>
+				</div>
+
+				<!--Inserimento della foto-->
+				<div class="mb-3">
+					<label class="form-label" for="inputImg">Immagine di profilo</label>
+					<input type="file" class="form-control" id="inputImg" name="file">
 				</div>
 
 

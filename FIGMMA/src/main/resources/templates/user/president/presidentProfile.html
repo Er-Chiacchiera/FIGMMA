@@ -12,7 +12,9 @@
 			<!--Card del presidente-->
 			<div class="col-md-4 mb-4">
 				<div class="card mx-auto" style="width: 18rem;">
-					<img src="..." class="card-img-top" alt="...">
+					<img th:if="${president.pathImg != null}" th:src="@{'/images/profile/' + ${president.pathImg}}" class="card-img-top" alt="...">
+					<img th:unless="${president.pathImg != null}" src="/images/profile/profile.jpg" class="card-img-top" alt="...">
+
 					<div class="card-body">
 						<h5 class="card-title" th:text="${president.nome} + ' ' + ${president.cognome}">Card title</h5>
 					</div>

@@ -8,55 +8,71 @@
 
 	<div class="d-flex container justify-content-center mt-4">
 		<div class="col-6 card border border-primary p-3 shadow">
-			<!--Form per aggiungere un nuovo Atleta-->
-			<form th:action="@{/athlete/add}" method="POST" th:object="${athlete}" class="row g-3">
+			
+			<!--******************* Form per aggiungere un nuovo Atleta *******************-->
+			<form th:action="@{/athlete/add}" method="POST" th:object="${athlete}" class="row g-3" enctype="multipart/form-data">
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
-
+				<!-- Inserimento del nome -->
 				<div class="col-md-6">
 					<label for="name" class="form-label">Nome</label>
 					<input class="form-control" required type="text" th:field="*{name}" id="name" />
 					<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 				</div>
 
+				<!-- Inserimento del cognome -->
 				<div class="col-md-6">
 					<label for="surname" class="form-label">Cognome</label>
 					<input class="form-control" required type="text" th:field="*{surname}" id="surname" />
 					<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
 				</div>
 
+				<!-- Inserimento della data di nascita -->
 				<div class="col-md-6">
 					<label for="DateOfBirth" class="form-label">Data di nascita</label>
 					<input class="form-control" required type="date" th:field="*{DateOfBirth}" id="DateOfBirth"
 						placeholder="dd/mm/yyyy" />
 					<span th:if="${#fields.hasErrors('DateOfBirth')}" th:errors="*{DateOfBirth}"></span>
 				</div>
+				
+				<!--Inserimento della foto-->
+				<div class="mb-3">
+					<label class="form-label" for="file">Immagine di profilo</label>
+					<input type="file" class="form-control" id="inputImg" name="file">
+				</div>
 
 
-				<!--Sezione che riguarla la classe Site -->
+				<!--******************* Sezione che riguarla la classe Site *******************-->
+				
+				<!-- Inserimento della regione -->
 				<div class="col-12">
 					<label for="site.country" class="form-label">Regione</label>
 					<input class="form-control" type="text" th:field="*{site.country}" id="site.country" />
 					<span th:if="${#fields.hasErrors('site.country')}" th:errors="*{site.country}"></span>
 				</div>
-
+				
+				<!-- Inserimento della città -->
 				<div class="col-12">
 					<label for="site.city" class="form-label"> Città</label>
 					<input class="form-control" type="text" th:field="*{site.city}" id="site.city" />
 					<span th:if="${#fields.hasErrors('site.city')}" th:errors="*{site.city}"></span>
 				</div>
 
+				<!-- Inserimento del Cap -->
 				<div class="col-12">
 					<label for="site.cap" class="form-label"> Cap</label>
 					<input class="form-control" type="number" th:field="*{site.cap}" id="site.cap" />
 					<span th:if="${#fields.hasErrors('site.cap')}" th:errors="*{site.cap}"></span>
 				</div>
-
+				
+				<!-- Tasto submit della form -->
 				<div class="col-12">
 					<button type="submit" class="btn btn-primary">Add</button>
 				</div>
+				
 			</form>
+			
 		</div>
 	</div>
 

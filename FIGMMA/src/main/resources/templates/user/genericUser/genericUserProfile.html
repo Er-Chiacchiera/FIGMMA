@@ -7,7 +7,9 @@
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
 
 	<div class="card mx-auto" style="width: 18rem;">
-		<img src="..." class="card-img-top" alt="...">
+		<img th:if="${user.pathImg != null}" th:src="@{'/images/profile/' + ${user.pathImg}}" class="card-img-top" alt="...">
+		<img th:unless="${user.pathImg != null}" src="/images/profile/profile.jpg" class="card-img-top" alt="...">
+
 		<div class="card-body">
 			<h5 class="card-title" th:text="${user.nome} + ' ' + ${user.cognome}">Card title</h5>
 		</div>
@@ -23,8 +25,8 @@
 		</ul>
 	</div>
 
-	<footer th:replace="~{fragments/base :: footer}"> <footer>
-		
+	<footer th:replace="~{fragments/base :: footer}"><footer>
+
 </body>
 
 </html>
