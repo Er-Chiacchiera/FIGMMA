@@ -165,5 +165,10 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
+#ignora foto
+/SurfTraining/src/main/resources/static/images/athlete/*
+/SurfTraining/src/main/resources/static/images/team/*
+/SurfTraining/src/main/resources/static/images/profile/*
+
 ### VS Code ###
 .vscode/

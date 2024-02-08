@@ -51,7 +51,7 @@
 				<div class="card" style="width: 18rem;">
 					<a class="text-reset text-decoration-none" th:href="@{'/athlete' + '/' + ${athlete.id}}">
 						<img th:if="${athlete.pathImg != null}" th:src="@{'/images/athlete/' + ${athlete.pathImg}}" class="card-img-top" alt="...">
-						<img th:unless="${athlete.pathImg != null}" src="/images/athlete/athlete.jpg" class="card-img-top" alt="...">
+						<img th:unless="${athlete.pathImg != null}" src="/images/preset/athlete.jpg" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title" th:text="${athlete.name} + ' ' + ${athlete.surname}">Card title</h5>
 							<div th:if="${athlete.team == null}">
