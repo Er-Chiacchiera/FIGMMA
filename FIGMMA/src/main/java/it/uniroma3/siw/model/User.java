@@ -14,6 +14,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -36,8 +37,8 @@ public class User {
 	@Size(min=1)
 	private String cF;
 	
-	@NotNull
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@Past
 	private LocalDate dateOfBirth;
 	
 	@OneToOne(cascade = CascadeType.ALL)

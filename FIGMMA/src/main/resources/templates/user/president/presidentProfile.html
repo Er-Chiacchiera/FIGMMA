@@ -11,7 +11,7 @@
 		<div class="row flex-md-row flex-sm-column">
 			<!--Card del presidente-->
 			<div class="col-md-4 mb-4">
-				<div class="card mx-auto" style="width: 18rem;">
+				<div class="card mx-auto" style="max-width: 18rem;">
 					<img th:if="${president.pathImg != null}" th:src="@{'/images/profile/' + ${president.pathImg}}" class="card-img-top" alt="...">
 					<img th:unless="${president.pathImg != null}" src="/images/preset/profile.jpg" class="card-img-top" alt="...">
 
@@ -27,54 +27,60 @@
 						</li>
 
 						<li class="list-group-item" th:text="'Nato il: ' + ${president.dateOfBirth}"> data di nascita</li>
-						<!--Solo per admin-->
-						<div sec:authorize="hasAuthority('ADMIN')">
-							<li class="list-group-item"><a th:href="@{'/user/edit/' + ${user.id}}" class="card-link">Edit athlete</a></li>
-							<li class="list-group-item"><a th:href="@{'/user/delete/' + ${user.id}}" class="card-link">Delete athlete</a></li>
-						</div>
+
 					</ul>
 				</div>
 			</div>
-
+			
+			
+			
 			<!--Team card-->
 			<div class="col-md-8 mb-4">
 
-				<!--Inizio delle card-->
+				<!--Inizio delle card-->				
 				<div class="row text-center">
-					<h2>Team</h2>
-
-					<div class="col mb-4 d-flex justify-content-center">
-						<div class="card mx-auto" style="width: 18rem;">
-							<img src="..." class="card-img-top" alt="...">
-							<div class="card-body">
-								<h5 class="card-title" th:text="'Team: ' + ${president.team.name}">Card title</h5>
-							</div>
-
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item"> Situata in :
-									<p th:text="'Regione: ' + ${president.team.site.country}"> Regione </p>
-									<p th:text="'Città: ' + ${president.team.site.City}"> città </p>
-									<p th:text="'Cap: ' + ${president.team.site.cap}"> cap </p>
-								</li>
-
-								<li class="list-group-item" th:text="'Fondata il : ' + ${president.team.dateOfCreation}"> data di nascita</li>
-							</ul>
-						</div>
+				
+					<div class="col mb-4 d-flex justify-content-center" th:if="${president.team==null}">
+						<h2>Non sei ancora in possesso di un team</h2>
 					</div>
-
-					<!--Inizio della sezione atleti-->
-					<div class="col-md-6 mb-4 d-flex flex-column align-items-center">
-						<h4>Atleti</h4>
-						<div class="d-flex justify-content-between">
-							<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/editAthletes/' + ${president.team.id}}">Edit Athletes Team</a>
+					
+					<div th:unless="${president.team==null}">
+						<h2>Team</h2>
+	
+						<div class="col mb-4 d-flex justify-content-center">
+							<div class="card mx-auto" style="width: 18rem;">
+								<img th:if="${president.team.pathImg != null}" th:src="@{'/images/team/' + ${president.team.pathImg}}" class="card-img-top" alt="...">
+								<img th:unless="${president.team.pathImg != null}" src="/images/preset/team.jpg" class="card-img-top" alt="...">
+								<div class="card-body">
+									<h5 class="card-title" th:text="'Team: ' + ${president.team.name}">Card title</h5>
+								</div>
+	
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item"> Situata in :
+										<p th:text="'Regione: ' + ${president.team.site.country}"> Regione </p>
+										<p th:text="'Città: ' + ${president.team.site.City}"> città </p>
+										<p th:text="'Cap: ' + ${president.team.site.cap}"> cap </p>
+									</li>
+	
+									<li class="list-group-item" th:text="'Fondata il : ' + ${president.team.dateOfCreation}"> data di nascita</li>
+								</ul>
+							</div>
 						</div>
-						<ol class="list-group list-group-numbered" th:each="athlete : ${president.team.athletes}">
-							<li class="list-group-item">
-								<span th:text="${athlete.name} +' '+${athlete.surname}">Nome e cognome atleta</span>
-								<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
-							</li>
-						</ol>
-
+	
+						<!--Inizio della sezione atleti-->
+						<div class="col-md-6 mb-4 d-flex flex-column align-items-center">
+							<h4>Atleti</h4>
+							<div class="d-flex justify-content-between">
+								<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/team/editAthletes/' + ${president.team.id}}">Edit Athletes Team</a>
+							</div>
+							<ol class="list-group list-group-numbered" th:each="athlete : ${president.team.athletes}">
+								<li class="list-group-item">
+									<span th:text="${athlete.name} +' '+${athlete.surname}">Nome e cognome atleta</span>
+									<a type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
+								</li>
+							</ol>
+	
+						</div>
 					</div>
 				</div>
 			</div>
