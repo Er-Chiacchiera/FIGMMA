@@ -33,7 +33,8 @@ public class AuthenticationController {
 
 	@Autowired
 	private UserService userService;
-
+	
+	/********** Restituisce una form per registrarsi **********/
 	@GetMapping(value = "/register") 
 	public String showRegisterForm (Model model) {
 		model.addAttribute("user", new User());
@@ -41,11 +42,13 @@ public class AuthenticationController {
 		return "auth/registerForm";
 	}
 
+	/********** restituirsce la form per fare il login **********/
 	@GetMapping(value = "/login") 
 	public String showLoginForm (Model model) {
 		return "auth/loginForm";
 	}
 
+	/********** riporta alla home **********/
 	@GetMapping(value = "/") 
 	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,6 +65,8 @@ public class AuthenticationController {
 		return "index";
 	}
 
+	
+	/********** eseguito nel caso di successo **********/
 	@GetMapping(value = "/success")
 	public String defaultAfterLogin(Model model) {
 
@@ -74,6 +79,7 @@ public class AuthenticationController {
 		return "index";
 	}
 
+	/********** validazione della form register **********/
 	@PostMapping(value = { "/register" })
 	public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult userBindingResult, @Valid
 			@ModelAttribute("credentials") Credentials credentials, @RequestParam("file")MultipartFile file, BindingResult credentialsBindingResult, Model model) {

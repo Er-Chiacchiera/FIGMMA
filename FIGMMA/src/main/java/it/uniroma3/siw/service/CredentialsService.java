@@ -44,7 +44,6 @@ public class CredentialsService {
 	}
 
 	public boolean alreadyExist(Credentials credentials) {
-		// TODO Auto-generated method stub
 		return this.credentialsRepository.existsByUsername(credentials.getUsername());
 	}
 }

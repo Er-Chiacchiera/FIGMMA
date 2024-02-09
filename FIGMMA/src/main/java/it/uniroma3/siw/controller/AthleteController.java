@@ -74,15 +74,19 @@ public class AthleteController {
 		return ATHLETE_DIR + "athleteProfile";
 	}
 
-
+	/********** Ritorna una form per modificare i dati di un atleta **********/
 	@GetMapping("/edit/{id}")
 	public String formEditAthlete(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("athlete", this.athleteService.GetAthleteById(id));
 		return ATHLETE_DIR + "athleteEdit"; 
 	}
 
+	/********** Convalida i dati raccolti dalla form update **********/
 	@PostMapping("/update/{id}")
 	public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, @RequestParam("file")MultipartFile file, BindingResult bindingResult, Model model) {
+		this.athleteValidator.validate(athlete, bindingResult);
+		this.siteValidator.validate(athlete.getSite(),bindingResult);
+		
 		if (bindingResult.hasErrors()) {
 			return ATHLETE_DIR + "athleteEdit";
 		}

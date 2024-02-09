@@ -12,19 +12,18 @@ import it.uniroma3.siw.repository.TeamRepository;
 public class TeamValidator implements Validator {
 	@Autowired
 	private TeamRepository teamRepository;
-	
+
 	@Override
 	public void validate(Object o, Errors errors) {
 		Team team = (Team)o;
-		if (team.getName()!=null && teamRepository.existsByName(team.getName())) {
-			errors.reject("team.duplicate");
+		if (team.getName()!=null && teamRepository.existsByName(team.getName())){
+			if(team.getId()!=teamRepository.findByName(team.getName()).get(0).getId())
+				errors.reject("team.duplicate");
 		}
-		
 	}
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

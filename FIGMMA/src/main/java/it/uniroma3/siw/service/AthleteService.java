@@ -33,7 +33,6 @@ public class AthleteService {
 	}
 
 	public Athlete GetAthleteById(Long id) {
-		// TODO Auto-generated method stub
 		return this.athleteRepository.findById(id).get();
 	}
 

@@ -15,7 +15,6 @@ public class SiteValidator implements Validator{
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -53,7 +52,8 @@ public class SiteValidator implements Validator{
 	public void validateAddress(Object o, Errors errors) {
 		Site site = (Site)o;
 		if (site.getCountry()!=null && site.getCity()!=null && site.getCap()!=null && this.siteRepository.existsByCountryAndCityAndCap(site.getCountry(), site.getCity(),site.getCap())) {
-			errors.reject("site.duplicate");
+			if(site.getId()!=this.siteRepository.findByCountryAndCityAndCap(site.getCountry(), site.getCity(),site.getCap()).get().getId())
+				errors.reject("site.duplicate");
 		}
 		if(site.getCountry().isEmpty())
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "site.country", "NotBlank");

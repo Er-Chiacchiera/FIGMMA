@@ -67,13 +67,13 @@ public class TeamController {
 		System.out.println(bindingResult);
 		if (!bindingResult.hasErrors()) {
 			this.teamService.addNewTeam(team);
-			
+
 			if(!file.isEmpty()) {
 				System.out.println("devo salvare la foto \n\n\n\n");
 				team.setPathImg(FileStorer.store(file,"team",team.getId()));
 				this.teamService.updateTeam(team);
 			}
-			
+
 			model.addAttribute("team", team);
 			return TEAM_DIR + "teamProfile";
 		} else {
@@ -110,6 +110,8 @@ public class TeamController {
 	/* Aggiorno tutte le informazioni relative al team */
 	@PostMapping("/update/{id}")
 	public String updateTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
+		this.teamValidator.validate(team, bindingResult);
+		this.siteValidator.validateAddress(team.getSite(), bindingResult);
 		if (bindingResult.hasErrors()) {
 			System.out.println("sono negli errori");
 			System.out.println(bindingResult);
@@ -154,10 +156,8 @@ public class TeamController {
 	@PostMapping("/addAthlete/{idTeam}/{idAthlete}")
 	public String addAthleteInTeam(@PathVariable("idTeam") Long idTeam, @PathVariable("idAthlete") Long idAthlete,
 			@Valid @ModelAttribute("contract") Contract contract, BindingResult bindingResult, Model model) {
-		System.out.println("Controllo le date per metterlo nel tem \n");
 		this.contractValidator.validate(contract, bindingResult);
 		System.out.println(bindingResult);
-		System.out.println("ho fatto il bindingResult \n\n\n\n\n\n");
 		if (!bindingResult.hasErrors()) {
 			this.teamService.addAtleteinTeam(idTeam, idAthlete, contract);
 			return "redirect:/team/editAthletes/" + idTeam;

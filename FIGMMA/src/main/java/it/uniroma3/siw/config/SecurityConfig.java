@@ -42,7 +42,7 @@ public class SecurityConfig {
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests((authorize) -> authorize
 				// chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-				.requestMatchers(HttpMethod.GET,"/","login","/index","/register","/css/**", "/images/**", "/loghi/**","/carousel/*").permitAll()
+				.requestMatchers(HttpMethod.GET,"/","login","/index","/register","/css/**", "/images/**","/icon/**", "/loghi/**","/carousel/*").permitAll()
 				// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register
 				.requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
 				.requestMatchers(HttpMethod.GET, "/*/add/*","/*/edit/*","/*/delete/*","*/update/*").hasAnyAuthority(ADMIN_ROLE)
