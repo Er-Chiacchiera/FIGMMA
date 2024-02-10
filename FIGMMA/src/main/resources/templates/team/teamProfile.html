@@ -9,17 +9,21 @@
 	<div class="container mt-4">
 		<div class="row">
 
-			<!-- Colonna 1 -->
+			<!-- Colonna 1: Informazioni sul Team -->
 			<div class="col-md-6">
+				<!-- Card del Team -->
 				<div class="card mx-auto" style="width: 18rem;">
+					<!-- Immagine del Team -->
 					<img th:if="${team.pathImg != null}" th:src="@{'/images/team/' + ${team.pathImg}}" class="card-img-top" alt="...">
 					<img th:unless="${team.pathImg != null}" src="/images/preset/team.jpg" class="card-img-top" alt="...">
 					<div class="card-body">
+						<!-- Nome del Team e Presidente -->
 						<h5 class="card-title" th:text="'Team: ' + ${team.name}">Card title</h5>
 						<p th:text="'Presidente: ' + ${team.president.nome} + ' ' + ${team.president.cognome}">
 							President name</p>
 					</div>
 
+					<!-- Informazioni sul Team -->
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item"> Situata in :
 							<p th:text="'Regione: ' + ${team.site.country}"> Regione </p>
@@ -30,15 +34,18 @@
 						<li class="list-group-item" th:text="'Fondata il : ' + ${team.dateOfCreation}"> data di nascita
 						</li>
 
+						<!-- Azioni per gli amministratori -->
 						<div sec:authorize="hasAuthority('ADMIN')">
-							<li class="list-group-item"><a type="button" class="btn btn-primary card-link"
-									th:href="@{'/team/edit/' + ${team.id}}">Edit team</a></li>
+							<!-- Modifica e Eliminazione del Team -->
 							<li class="list-group-item">
-								<!-- Button trigger modal -->
+								<a type="button" class="btn btn-primary card-link"
+									th:href="@{'/team/edit/' + ${team.id}}">Edit team</a>
+							</li>
+							<li class="list-group-item">
 								<a type="button" class="btn btn-primary" data-bs-toggle="modal"
 									data-bs-target="#exampleModal">
 									Delete team </a>
-								<!-- Modal -->
+								<!-- Modal per la conferma dell'eliminazione -->
 								<div class="modal fade" id="exampleModal" tabindex="-1"
 									aria-labelledby="exampleModalLabel" aria-hidden="true">
 									<div class="modal-dialog">
@@ -67,12 +74,11 @@
 				</div>
 			</div>
 
-
-
-			<!-- Colonna 2 -->
+			<!-- Colonna 2: Elenco degli Atleti -->
 			<div class="col-md-6">
+				<!-- Titolo -->
 				<h5> I nostri atleti </h5>
-
+				<!-- Elenco degli Atleti -->
 				<ol class="list-group list-group-numbered" th:each="athlete : ${team.athletes}">
 					<li class="list-group-item">
 						<span th:text="${athlete.name} +' '+${athlete.surname}">Nome e cognome atleta</span>
@@ -80,14 +86,12 @@
 							th:href="@{'/athlete/' + ${athlete.id}}">Profilo Atleta</a>
 					</li>
 				</ol>
-
 			</div>
 		</div>
 	</div>
 
-
-	<footer th:replace="~{fragments/base :: footer}">
-		<footer>
+	<!-- Footer -->
+	<footer th:replace="~{fragments/base :: footer}"></footer>
 </body>
 
 </html>

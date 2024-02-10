@@ -6,27 +6,31 @@
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
 
+	<!-- Form per la modifica di un atleta -->
 	<div class="d-flex container justify-content-center mt-4">
 		<div class="col-6 card border border-primary p-3 shadow">
-			<!--Form per aggiungere un nuovo Istruttore-->
-			<form th:action="@{'/athlete/update/' + ${athlete.id}}" method="POST" th:object="${athlete}"
-				class="row g-3" enctype="multipart/form-data">
+			<form th:action="@{'/athlete/update/' + ${athlete.id}}" method="POST" th:object="${athlete}" class="row g-3"
+				enctype="multipart/form-data">
+				<!-- Gestione degli errori globali -->
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
 
+				<!-- Campo per il nome -->
 				<div class="col-md-6">
 					<label for="name" class="form-label">Nome</label>
 					<input class="form-control" required type="text" th:field="*{name}" id="name" />
 					<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 				</div>
 
+				<!-- Campo per il cognome -->
 				<div class="col-md-6">
 					<label for="surname" class="form-label">Cognome</label>
 					<input class="form-control" required type="text" th:field="*{surname}" id="surname" />
 					<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
 				</div>
 
+				<!-- Campo per la data di nascita -->
 				<div class="col-md-6">
 					<label for="DateOfBirth" class="form-label">Data di nascita</label>
 					<input class="form-control" required type="date" th:field="*{dateOfBirth}" id="dateOfBirth"
@@ -34,14 +38,13 @@
 					<span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
 				</div>
 
-				<!--Inserimento della foto-->
+				<!-- Inserimento della foto -->
 				<div class="mb-3">
 					<label class="form-label" for="inputImg">Immagine di profilo</label>
 					<input type="file" class="form-control" id="inputImg" name="file">
 				</div>
 
-
-				<!--Sezione che riguarla la classe Site -->
+				<!-- Sezione riguardante la classe Site -->
 				<div class="col-12">
 					<label for="site.country" class="form-label">Regione</label>
 					<input class="form-control" type="text" th:field="*{site.country}" id="site.country" />
@@ -67,8 +70,7 @@
 		</div>
 	</div>
 
-
-
+	<!-- Footer -->
 	<footer th:replace="~{fragments/base :: footer}">
 		<footer>
 </body>

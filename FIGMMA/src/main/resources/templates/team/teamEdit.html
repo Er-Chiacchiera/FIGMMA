@@ -1,79 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{fragments/base :: head(title=Homepage)}">Hompage</head>
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
-	
+
+	<!-- Form per aggiungere un nuovo Team -->
 	<div class="d-flex container justify-content-center mt-4">
-		<div class="col-6 card border border-primary p-3 shadow" >	
-			<!--Form per aggiungere un nuovo Team-->
-			<form th:action="@{'/team/update/' + ${team.id}}" method="POST" th:object="${team}" class="row g-3" enctype="multipart/form-data">
+		<div class="col-6 card border border-primary p-3 shadow">
+			<form th:action="@{'/team/update/' + ${team.id}}" method="POST" th:object="${team}" class="row g-3"
+				enctype="multipart/form-data">
+				<!-- Gestione degli errori globali -->
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
 				</div>
-				
+
+				<!-- Campo per il nome del team -->
 				<div class="col-md-6">
 					<label for="name" class="form-label">Nome</label>
-					<input class="form-control" required type="text" th:field="*{name}" id="name"/>
+					<input class="form-control" required type="text" th:field="*{name}" id="name" />
 					<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 				</div>
-				
+
+				<!-- Campo per la data di fondazione del team -->
 				<div class="col-md-6">
 					<label for="dateOfCreation" class="form-label">Data di fondazione</label>
-					<input class="form-control" required type="date" th:field="*{dateOfCreation}" id="dateOfCreation" placeholder="dd/mm/yyyy"/>
+					<input class="form-control" required type="date" th:field="*{dateOfCreation}" id="dateOfCreation"
+						placeholder="dd/mm/yyyy" />
 					<span th:if="${#fields.hasErrors('dateOfCreation')}" th:errors="*{dateOfCreation}"></span>
 				</div>
-				
+
+				<!-- Selezione del presidente -->
 				<div class="col-md-4">
-					<label for="president" class="form-label">Secgli il presidente</label>
+					<label for="president" class="form-label">Scegli il presidente</label>
 					<select class="form-select" type="User" th:field="*{president}" name="president">
 						<div th:each="user : ${users}">
-							<option th:value="${user.id}" th:text="${user.nome} + ' ' +${user.cognome}">presidente</option>
+							<option th:value="${user.id}" th:text="${user.nome} + ' ' +${user.cognome}">presidente
+							</option>
 						</div>
 					</select>
 				</div>
-				
-				<!--Inserimento della foto-->
+
+				<!-- Inserimento dell'immagine di profilo -->
 				<div class="mb-3">
 					<label class="form-label" for="file">Immagine di profilo</label>
 					<input type="file" class="form-control" id="inputImg" name="file">
 				</div>
-				
-				<!--Sezione che riguarla la classe Site -->
+
+				<!-- Sezione riguardante la classe Site -->
 				<div class="col-12">
 					<label for="site.country" class="form-label">Regione</label>
-					<input class="form-control"  type="text" th:field="*{site.country}" id="site.country"/>
+					<input class="form-control" type="text" th:field="*{site.country}" id="site.country" />
 					<span th:if="${#fields.hasErrors('site.country')}" th:errors="*{site.country}"></span>
 				</div>
-				
+
 				<div class="col-12">
-					<label for="site.city" class="form-label"> Città</label>
-					<input class="form-control" type="text" th:field="*{site.city}" id="site.city"/>
+					<label for="site.city" class="form-label">Città</label>
+					<input class="form-control" type="text" th:field="*{site.city}" id="site.city" />
 					<span th:if="${#fields.hasErrors('site.city')}" th:errors="*{site.city}"></span>
 				</div>
-				
+
 				<div class="col-12">
-					<label for="site.cap" class="form-label"> Cap</label>
-					<input class="form-control" type="number" th:field="*{site.cap}" id="site.cap"/>
+					<label for="site.cap" class="form-label">Cap</label>
+					<input class="form-control" type="number" th:field="*{site.cap}" id="site.cap" />
 					<span th:if="${#fields.hasErrors('site.cap')}" th:errors="*{site.cap}"></span>
 				</div>
-				
+
 				<div class="col-12">
-					<label for="site.address" class="form-label"> Via</label>
-					<input class="form-control" type="text" th:field="*{site.address}" id="site.address"/>
+					<label for="site.address" class="form-label">Via</label>
+					<input class="form-control" type="text" th:field="*{site.address}" id="site.address" />
 					<span th:if="${#fields.hasErrors('site.address')}" th:errors="*{site.address}"></span>
 				</div>
-				
+
+				<!-- Pulsante per eseguire l'aggiornamento -->
 				<div class="col-12">
 					<button type="submit" class="btn btn-primary">Edit</button>
 				</div>
 			</form>
 		</div>
 	</div>
- 
- 
- 
-	<footer th:replace="~{fragments/base :: footer}"><footer>
+
+	<!-- Footer -->
+	<footer th:replace="~{fragments/base :: footer}"></footer>
 </body>
+
 </html>

@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/base :: head(title=Homepage)}">Hompage</head>
+<head th:replace="~{fragments/base :: head(title='Profilo')}">Hompage</head>
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
 
+	<!-- Card per visualizzare le informazioni dell'atleta -->
 	<div class="card mx-auto" style="width: 18rem;">
-		<img th:if="${athlete.pathImg != null}" th:src="@{'/images/athlete/' + ${athlete.pathImg}}" class="card-img-top" alt="...">
+		<!-- Immagine dell'atleta -->
+		<img th:if="${athlete.pathImg != null}" th:src="@{'/images/athlete/' + ${athlete.pathImg}}" class="card-img-top"
+			alt="...">
 		<img th:unless="${athlete.pathImg != null}" src="/images/preset/athlete.jpg" class="card-img-top" alt="...">
 		<div class="card-body">
+			<!-- Nome e cognome dell'atleta -->
 			<h5 class="card-title" th:text="${athlete.name} + ' ' + ${athlete.surname}">Card title</h5>
+			<!-- Informazioni sul team dell'atleta, se presente -->
 			<div th:if="${athlete.team == null}">
 				<p class="card-text">Nessun contratto</p>
 			</div>
@@ -19,15 +24,17 @@
 			</div>
 		</div>
 
-
+		<!-- Lista delle informazioni sull'atleta -->
 		<ul class="list-group list-group-flush">
+			<!-- Luogo di nascita -->
 			<li class="list-group-item"> Nato a:
 				<p th:text="'Regione: ' + ${athlete.site.country}"> Regione </p>
 				<p th:text="'Città: ' + ${athlete.site.City}"> città </p>
 				<p th:text="'Cap: ' + ${athlete.site.cap}"> cap </p>
 			</li>
-
+			<!-- Data di nascita -->
 			<li class="list-group-item" th:text="'Nato il: ' + ${athlete.dateOfBirth}"> data di nascita</li>
+			<!-- Periodo del contratto, solo se l'atleta ha un team -->
 			<div th:if="${athlete.team != null}">
 				<li class="list-group-item">
 					<p th:text="'Data inizio contratto: ' + ${athlete.startOfMembership}"> inizio contratto </p>
@@ -35,14 +42,19 @@
 				</li>
 			</div>
 
-			<!--solo per admin-->
+			<!-- Azioni per l'amministratore -->
 			<div sec:authorize="hasAuthority('ADMIN')">
-				<li class="list-group-item"><a th:href="@{'/athlete/edit/' + ${athlete.id}}" class="btn btn-primary card-link" type="button" >Edit athlete</a></li>
+				<!-- Modifica dell'atleta -->
+				<li class="list-group-item"><a th:href="@{'/athlete/edit/' + ${athlete.id}}"
+						class="btn btn-primary card-link" type="button">Edit athlete</a></li>
+				<!-- Eliminazione dell'atleta -->
 				<li class="list-group-item">
-					<!-- Button trigger modal -->
-					<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Delete athlete </a>
-					<!-- Modal -->
-					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<!-- Trigger del modal per confermare l'eliminazione -->
+					<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						Delete athlete </a>
+					<!-- Modal per confermare l'eliminazione -->
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -55,7 +67,9 @@
 									...
 								</div>
 								<div class="modal-footer">
+									<!-- Annulla l'eliminazione -->
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+									<!-- Conferma l'eliminazione -->
 									<a type="button" class="btn btn-primary"
 										th:href="@{'/athlete/delete/' + ${athlete.id}}">Si</a>
 								</div>
@@ -67,7 +81,7 @@
 		</ul>
 	</div>
 
-
+	<!-- Footer -->
 	<footer th:replace="~{fragments/base :: footer}">
 		<footer>
 </body>

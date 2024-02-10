@@ -5,21 +5,22 @@
 
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
-
+	
+	<!-- Titolo del team -->
 	<h1 th:text="${team.name}"> nome team</h1>
 
-
+	<!-- Sezione degli atleti nel team -->
 	<h4> Atleti nel team:</h4>
-	<div th:if=${team.athletes.isEmpty()}>
+	<div th:if="${team.athletes.isEmpty()}">
 		<span>Non ci sono Atleti nel team</span>
 	</div>
 
-	<div th:unless=${team.athletes.isEmpty()}>
+	<div th:unless="${team.athletes.isEmpty()}">
 		<ul class="list-group" th:each="athlete : ${team.athletes}">
 			<li class="list-group-item">
 				<span th:text="${athlete.name} +' '+${athlete.surname}"> atleti con contratto </span>
-				<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Remove
-					athlete </a>
+				<!-- Pulsante per rimuovere l'atleta (apre un modal) -->
+				<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Remove athlete </a>
 				<!-- Modal -->
 				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
 					aria-hidden="true">
@@ -35,6 +36,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+								<!-- Pulsante per confermare la rimozione dell'atleta -->
 								<a type="button" class="btn btn-primary"
 									th:href="@{'/team/removeAthlete/' + ${athlete.id}}">Si</a>
 							</div>
@@ -45,27 +47,25 @@
 		</ul>
 	</div>
 
-
+	<!-- Sezione degli atleti disponibili -->
 	<h4> Atleti Disponibili:</h4>
-	<div th:if=${athletesFree.isEmpty()}>
+	<div th:if="${athletesFree.isEmpty()}">
 		<span>Non ci sono Atleti senza contratto</span>
 	</div>
 
-	<div th:unless=${athletesFree.isEmpty()}>
+	<div th:unless="${athletesFree.isEmpty()}">
 		<ul class="list-group" th:each="athleteFree : ${athletesFree}">
 			<li class="list-group-item">
 				<span th:text="${athleteFree.name} +' '+${athleteFree.surname}"> atleti senza contratto </span>
+				<!-- Pulsante per aggiungere l'atleta al team -->
 				<a type="button" class="btn btn-outline-primary me-2"
 					th:href="@{'/team/addAthlete/' + ${team.id} +'/'+ ${athleteFree.id}}">Add athlete</a>
 			</li>
 		</ul>
 	</div>
 
-
-
-
-	<footer th:replace="~{fragments/base :: footer}">
-		<footer>
+	<!-- Footer -->
+	<footer th:replace="~{fragments/base :: footer}"></footer>
 </body>
 
 </html>

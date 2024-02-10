@@ -6,17 +6,19 @@
 <body>
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
 
-	<!--Dropdown per il filtraggio della ricerca-->
+	<!-- Dropdown per il filtraggio della ricerca -->
 	<div class="container text-center">
 		<div class="row align-items-start">
 			<div class="col">
 				<div class="dropdown mb-4">
-					<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtra per tipo </button>
+					<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+						aria-expanded="false"> Filtra per tipo </button>
 					<div class="dropdown-menu">
 						<div class="container-fluid">
 							<form th:action="@{/athlete/search}" method="POST" class="mb-3">
 								<div class="row">
 									<div class="col-md-4">
+										<!-- Selezione del tipo di ricerca -->
 										<select class="form-select" type="text" th:value="${type}" name="type">
 											<option value="name">Nome</option>
 											<option value="surname">Cognome</option>
@@ -24,10 +26,12 @@
 										</select>
 									</div>
 									<div class="col-md-4">
+										<!-- Input per l'attributo di ricerca -->
 										<input class="form-control" placeholder="Es. Marco, Rossi, force" required
 											type="text" th:value="${attribute}" name="attribute" />
 									</div>
 									<div class="col-md-4">
+										<!-- Pulsante di invio del modulo -->
 										<button type="submit" class="btn btn-primary">Cerca</button>
 									</div>
 								</div>
@@ -37,23 +41,32 @@
 				</div>
 			</div>
 			<div class="col">
-				<a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-outline-primary me-2" th:href="@{'/athlete/add/new'}"> Add new athlete</a>
+				<!-- Aggiunta di un nuovo atleta (solo per admin) -->
+				<a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-outline-primary me-2"
+					th:href="@{'/athlete/add/new'}"> Add new athlete</a>
 			</div>
 		</div>
 	</div>
 
+	<!-- Messaggio se non ci sono atleti -->
 	<div th:if="${athletes.isEmpty()}">Non ci sono atleti nel sistema</div>
 
-	<!--Inizio delle card-->
+	<!-- Inizio delle card per visualizzare gli atleti -->
 	<div class="container text-center">
 		<div class="row">
 			<div class="col mb-4 d-flex justify-content-center" th:each="athlete : ${athletes}">
 				<div class="card" style="width: 18rem;">
+					<!-- Link alla pagina dell'atleta -->
 					<a class="text-reset text-decoration-none" th:href="@{'/athlete' + '/' + ${athlete.id}}">
-						<img th:if="${athlete.pathImg != null}" th:src="@{'/images/athlete/' + ${athlete.pathImg}}" class="card-img-top" alt="...">
-						<img th:unless="${athlete.pathImg != null}" src="/images/preset/athlete.jpg" class="card-img-top" alt="...">
+						<!-- Immagine dell'atleta -->
+						<img th:if="${athlete.pathImg != null}" th:src="@{'/images/athlete/' + ${athlete.pathImg}}"
+							class="card-img-top" alt="...">
+						<img th:unless="${athlete.pathImg != null}" src="/images/preset/athlete.jpg"
+							class="card-img-top" alt="...">
 						<div class="card-body">
+							<!-- Nome e cognome dell'atleta -->
 							<h5 class="card-title" th:text="${athlete.name} + ' ' + ${athlete.surname}">Card title</h5>
+							<!-- Informazioni sul team dell'atleta, se presente -->
 							<div th:if="${athlete.team == null}">
 								<p class="card-text">Nessun contratto</p>
 							</div>
@@ -67,6 +80,7 @@
 		</div>
 	</div>
 
+	<!-- Footer -->
 	<footer th:replace="~{fragments/base :: footer}"></footer>
 </body>
 

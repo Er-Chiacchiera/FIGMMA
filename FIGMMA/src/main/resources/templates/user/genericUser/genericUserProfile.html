@@ -4,29 +4,38 @@
 <head th:replace="~{fragments/base :: head(title=Profilo)}">Hompage</head>
 
 <body>
+	<!-- Navbar -->
 	<nav th:replace="~{fragments/base :: navbar}"></nav>
 
+	<!-- Card dell'utente -->
 	<div class="card mx-auto" style="width: 18rem;">
-		<img th:if="${user.pathImg != null}" th:src="@{'/images/profile/' + ${user.pathImg}}" class="card-img-top" alt="...">
+		<!-- Immagine dell'utente -->
+		<img th:if="${user.pathImg != null}" th:src="@{'/images/profile/' + ${user.pathImg}}" class="card-img-top"
+			alt="...">
+		<!-- Immagine di default se l'immagine dell'utente non è disponibile -->
 		<img th:unless="${user.pathImg != null}" src="/images/preset/profile.jpg" class="card-img-top" alt="...">
 
 		<div class="card-body">
+			<!-- Nome e cognome dell'utente -->
 			<h5 class="card-title" th:text="${user.nome} + ' ' + ${user.cognome}">Card title</h5>
 		</div>
 
+		<!-- Dettagli dell'utente -->
 		<ul class="list-group list-group-flush">
+			<!-- Luogo di nascita dell'utente -->
 			<li class="list-group-item"> Nato a:
 				<p th:text="'Regione: ' + ${user.site.country}"> Regione </p>
 				<p th:text="'Città: ' + ${user.site.City}"> città </p>
 				<p th:text="'Cap: ' + ${user.site.cap}"> cap </p>
 			</li>
 
+			<!-- Data di nascita dell'utente -->
 			<li class="list-group-item" th:text="'Nato il: ' + ${user.dateOfBirth}"> data di nascita</li>
 		</ul>
 	</div>
 
-	<footer th:replace="~{fragments/base :: footer}"><footer>
-
+	<!-- Footer -->
+	<footer th:replace="~{fragments/base :: footer}"></footer>
 </body>
 
 </html>
