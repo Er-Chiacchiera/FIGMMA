@@ -17,7 +17,7 @@ public class TeamValidator implements Validator {
 	public void validate(Object o, Errors errors) {
 		Team team = (Team)o;
 		if (team.getName()!=null && teamRepository.existsByName(team.getName())){
-			if(team.getId()!=teamRepository.findByName(team.getName()).get(0).getId())
+			if(!team.getId().equals(teamRepository.findByName(team.getName()).get(0).getId()))
 				errors.reject("team.duplicate");
 		}
 	}

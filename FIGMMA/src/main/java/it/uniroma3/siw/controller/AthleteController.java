@@ -83,11 +83,11 @@ public class AthleteController {
 
 	/********** Convalida i dati raccolti dalla form update **********/
 	@PostMapping("/update/{id}")
-	public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete, @RequestParam("file")MultipartFile file, BindingResult bindingResult, Model model) {
+	public String updateAthlete(@Valid @ModelAttribute("athlete") Athlete athlete,BindingResult bindingResult, @RequestParam("file")MultipartFile file, Model model) {
 		this.athleteValidator.validate(athlete, bindingResult);
-		this.siteValidator.validate(athlete.getSite(),bindingResult);
 		
 		if (bindingResult.hasErrors()) {
+			System.out.println(bindingResult);
 			return ATHLETE_DIR + "athleteEdit";
 		}
 		if(!file.isEmpty()) {

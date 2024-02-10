@@ -29,9 +29,9 @@
 
 				<div class="col-md-6">
 					<label for="DateOfBirth" class="form-label">Data di nascita</label>
-					<input class="form-control" required type="date" th:field="*{DateOfBirth}" id="DateOfBirth"
+					<input class="form-control" required type="date" th:field="*{dateOfBirth}" id="dateOfBirth"
 						placeholder="dd/mm/yyyy" />
-					<span th:if="${#fields.hasErrors('DateOfBirth')}" th:errors="*{DateOfBirth}"></span>
+					<span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
 				</div>
 
 				<!--Inserimento della foto-->

@@ -109,15 +109,15 @@ public class TeamController {
 
 	/* Aggiorno tutte le informazioni relative al team */
 	@PostMapping("/update/{id}")
-	public String updateTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult, Model model) {
+	public String updateTeam(@Valid @ModelAttribute("team") Team team, BindingResult bindingResult,@PathVariable("id") Long id ,Model model) {
 		this.teamValidator.validate(team, bindingResult);
-		this.siteValidator.validateAddress(team.getSite(), bindingResult);
 		if (bindingResult.hasErrors()) {
-			System.out.println("sono negli errori");
 			System.out.println(bindingResult);
+			List<User> presidents = this.userService.findPresidentsWithoutTeam();
+			presidents.add(this.teamService.GetTeamById(id).getPresident());
+			model.addAttribute("users", presidents);
 			return TEAM_DIR + "teamEdit";
 		}
-		System.out.println("non sono negli errori!!!!!!!!!\n");
 		this.teamService.updateTeam(team);
 		return "redirect:/team/" + team.getId();
 	}
